@@ -8,32 +8,30 @@ export const FloatingQuickNav: React.FC = () => {
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
-    let ticking = false;
     const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const scrollY = window.scrollY;
-          const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-          
-          if (scrollY > 120) {
-            setIsVisible(true);
-          } else {
-            setIsVisible(false);
-            setIsExpanded(false);
-          }
+      const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      const totalHeight = (document.documentElement.scrollHeight || document.body.scrollHeight) - window.innerHeight;
+      
+      if (scrollY > 150) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+        setIsExpanded(false);
+      }
 
-          if (totalHeight > 0) {
-            setScrollProgress(Math.min(100, Math.max(0, (scrollY / totalHeight) * 100)));
-          }
-          ticking = false;
-        });
-        ticking = true;
+      if (totalHeight > 0) {
+        setScrollProgress(Math.min(100, Math.max(0, (scrollY / totalHeight) * 100)));
       }
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll, { passive: true, capture: true });
+    document.addEventListener('scroll', handleScroll, { passive: true, capture: true });
     handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   const scrollTo = (id: string) => {
@@ -44,8 +42,11 @@ export const FloatingQuickNav: React.FC = () => {
     setIsExpanded(false);
   };
 
-  const scrollToTop = () => {
+  const scrollToTop = (e?: React.MouseEvent) => {
+    if (e) e.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
+    document.body.scrollTo({ top: 0, behavior: 'smooth' });
     setIsExpanded(false);
   };
 
@@ -63,15 +64,15 @@ export const FloatingQuickNav: React.FC = () => {
   return (
     <aside
       aria-label="Quick Page Navigation"
-      className={`fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3 font-sans transition-all duration-500 ${
-        isVisible ? 'opacity-100 translate-y-0 pointer-events-auto scale-100' : 'opacity-0 translate-y-8 pointer-events-none scale-90'
+      className={`fixed bottom-6 right-6 z-[9999] flex flex-col items-end gap-3 font-sans transition-all duration-500 ease-out ${
+        isVisible ? 'opacity-100 translate-y-0 pointer-events-auto scale-100' : 'opacity-0 translate-y-10 pointer-events-none scale-75'
       }`}
     >
       
       {/* Expanded Quick Jump Drawer */}
       {isExpanded && (
-        <div className="bg-[#0D0F14]/95 border border-[#C5A059]/40 p-2.5 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.9)] backdrop-blur-2xl flex flex-col gap-1 min-w-[200px] animate-in fade-in zoom-in-95 slide-in-from-bottom-3 duration-300">
-          <div className="px-3 py-2 border-b border-white/10 flex items-center justify-between text-[10px] font-mono tracking-widest text-[#E6CA85] uppercase">
+        <div className="bg-[#0B0D12]/95 border border-[#C5A059]/50 p-3 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.95)] backdrop-blur-2xl flex flex-col gap-1.5 min-w-[210px] animate-in fade-in zoom-in-95 slide-in-from-bottom-4 duration-300">
+          <div className="px-3 py-1.5 border-b border-white/10 flex items-center justify-between text-[10px] font-mono tracking-widest text-[#E6CA85] uppercase">
             <span>Island Waypoints</span>
             <span className="text-[#C5A059] font-bold">{Math.round(scrollProgress)}%</span>
           </div>
@@ -79,7 +80,7 @@ export const FloatingQuickNav: React.FC = () => {
             <button
               key={link.id}
               onClick={() => scrollTo(link.id)}
-              className="flex items-center gap-3 px-3 py-2 text-xs text-stone-200 hover:text-white hover:bg-[#C5A059]/15 hover:border-[#C5A059]/30 rounded-xl transition-all duration-200 text-left cursor-pointer border border-transparent"
+              className="flex items-center gap-3 px-3 py-2 text-xs text-stone-200 hover:text-white hover:bg-[#C5A059]/20 hover:border-[#C5A059]/40 rounded-xl transition-all duration-200 text-left cursor-pointer border border-transparent"
             >
               {link.icon}
               <span className="font-normal">{link.label}</span>
@@ -95,10 +96,10 @@ export const FloatingQuickNav: React.FC = () => {
         <button
           onClick={() => setIsExpanded(!isExpanded)}
           aria-label="Toggle Quick Navigation Drawer"
-          className={`px-4 py-2.5 rounded-full bg-[#0E1117]/90 border text-xs font-mono transition-all duration-300 shadow-2xl flex items-center gap-2 cursor-pointer backdrop-blur-xl ${
+          className={`px-4 py-2.5 rounded-full bg-[#0B0D12]/90 border text-xs font-mono transition-all duration-300 shadow-2xl flex items-center gap-2 cursor-pointer backdrop-blur-xl ${
             isExpanded
-              ? 'border-[#C5A059] text-gold-gradient shadow-[0_0_20px_rgba(197,160,89,0.4)]'
-              : 'border-white/15 text-[#E6CA85] hover:border-[#C5A059]/60 hover:bg-white/10'
+              ? 'border-[#C5A059] text-gold-gradient shadow-[0_0_25px_rgba(197,160,89,0.5)]'
+              : 'border-white/20 text-[#E6CA85] hover:border-[#C5A059]/70 hover:bg-white/10'
           }`}
         >
           <Sparkles className="w-3.5 h-3.5 text-[#C5A059] animate-spin" style={{ animationDuration: '6s' }} />
@@ -112,21 +113,21 @@ export const FloatingQuickNav: React.FC = () => {
           onMouseLeave={() => setIsHovered(false)}
           aria-label="Scroll back to top of page"
           title={`Scroll to top (${Math.round(scrollProgress)}%)`}
-          className="relative w-12 h-12 rounded-full bg-[#0E1117]/95 border border-[#C5A059]/50 hover:border-[#C5A059] flex items-center justify-center text-[#F3EFE6] hover:text-[#E6CA85] transition-all duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.8)] group cursor-pointer backdrop-blur-xl hover:scale-110 animate-beacon"
+          className="relative w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-gradient-to-b from-[#141822] to-[#0A0C10] border-2 border-[#C5A059] flex items-center justify-center text-[#F3EFE6] hover:text-[#E6CA85] transition-all duration-300 shadow-[0_10px_35px_rgba(0,0,0,0.9),0_0_20px_rgba(197,160,89,0.4)] group cursor-pointer backdrop-blur-2xl hover:scale-110 active:scale-95 animate-beacon"
         >
           {/* Animated Circular Progress Ring */}
           <svg className="absolute inset-0 w-full h-full -rotate-90 pointer-events-none p-1" viewBox="0 0 36 36">
             <path
-              className="text-white/10"
+              className="text-white/15"
               strokeWidth="2.5"
               stroke="currentColor"
               fill="none"
               d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
             />
             <path
-              className="text-[#C5A059] transition-all duration-200 ease-out"
+              className="text-[#E6CA85] transition-all duration-200 ease-out"
               strokeDasharray={`${scrollProgress}, 100`}
-              strokeWidth="2.5"
+              strokeWidth="2.8"
               strokeLinecap="round"
               stroke="currentColor"
               fill="none"
@@ -134,17 +135,20 @@ export const FloatingQuickNav: React.FC = () => {
             />
           </svg>
 
-          {/* Soaring Arrow Icon with radiant bounce */}
-          <div className="relative z-10 flex flex-col items-center justify-center">
-            <ArrowUp className={`w-4 h-4 text-[#E6CA85] transition-transform duration-300 ${
-              isHovered ? '-translate-y-1 scale-110 text-white' : 'animate-soar'
+          {/* Soaring Arrow Icon & Top text */}
+          <div className="relative z-10 flex flex-col items-center justify-center pointer-events-none">
+            <ArrowUp className={`w-5 h-5 text-[#E6CA85] group-hover:text-white transition-all duration-300 ${
+              isHovered ? '-translate-y-1 scale-125' : 'animate-soar'
             }`} />
+            <span className="font-mono text-[8px] font-bold text-[#C5A059] tracking-tighter uppercase -mt-0.5">
+              TOP
+            </span>
           </div>
 
           {/* Tooltip on hover */}
           {isHovered && (
-            <span className="absolute -top-8 px-2.5 py-1 rounded-md bg-[#0C0D0E] border border-[#C5A059]/40 text-[10px] font-mono text-[#E6CA85] whitespace-nowrap shadow-xl animate-in fade-in duration-200">
-              Top · {Math.round(scrollProgress)}%
+            <span className="absolute -top-9 px-3 py-1 rounded-md bg-[#0C0D0E] border border-[#C5A059]/60 text-[10px] font-mono text-[#E6CA85] whitespace-nowrap shadow-2xl animate-in fade-in duration-200">
+              Scroll to Top ({Math.round(scrollProgress)}%)
             </span>
           )}
         </button>
