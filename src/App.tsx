@@ -20,6 +20,7 @@ import { PracticalGuide } from './components/travelGuide/PracticalGuide';
 import { FinalCTA } from './components/cta/FinalCTA';
 import { ScrollProgress } from './components/ui/ScrollProgress';
 import { FloatingQuickNav } from './components/ui/FloatingQuickNav';
+import { CursorGlow } from './components/ui/CursorGlow';
 
 function MainSiteContent() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -69,6 +70,9 @@ function MainSiteContent() {
     <div className="min-h-screen bg-[#0C0D0E] text-[#F3EFE6] font-sans selection:bg-[#C5A059] selection:text-[#0C0D0E] overflow-x-hidden relative">
       {/* Live Global Scroll Progress Bar */}
       <ScrollProgress />
+
+      {/* Ambient Interactive Cursor Glow */}
+      <CursorGlow />
 
       {/* Top Navigation */}
       <Header

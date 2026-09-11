@@ -94,9 +94,14 @@
   50% { transform: translateY(-8px) rotate(0.5deg); }
 }
 
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-12px) scale(1.02); }
+}
+
 @keyframes pulseGlow {
   0%, 100% { opacity: 0.4; transform: scale(1); }
-  50% { opacity: 0.8; transform: scale(1.08); }
+  50% { opacity: 0.85; transform: scale(1.08); }
 }
 
 @keyframes shimmerEffect {
@@ -105,8 +110,8 @@
 }
 
 @keyframes radarWave {
-  0% { transform: scale(0.8); opacity: 0.8; }
-  100% { transform: scale(2.6); opacity: 0; }
+  0% { transform: scale(0.8); opacity: 0.9; }
+  100% { transform: scale(2.8); opacity: 0; }
 }
 
 @keyframes steamSlow {
@@ -122,8 +127,22 @@
   100% { background-position: 0% 50%; }
 }
 
+@keyframes soarUp {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes beaconGlow {
+  0%, 100% { box-shadow: 0 0 15px rgba(197, 160, 89, 0.4), 0 0 30px rgba(197, 160, 89, 0.2); }
+  50% { box-shadow: 0 0 25px rgba(197, 160, 89, 0.7), 0 0 50px rgba(197, 160, 89, 0.4); }
+}
+
 .animate-float {
   animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: floatSlow 8s ease-in-out infinite;
 }
 
 .animate-pulse-glow {
@@ -141,6 +160,14 @@
 .animate-gradient-pan {
   background-size: 200% 200%;
   animation: gradientPan 8s ease infinite;
+}
+
+.animate-soar {
+  animation: soarUp 2s ease-in-out infinite;
+}
+
+.animate-beacon {
+  animation: beaconGlow 3s ease-in-out infinite;
 }
 
 /* Luxury Glassmorphism Utilities */
