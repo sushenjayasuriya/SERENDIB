@@ -76,11 +76,11 @@ export const DestinationSelector: React.FC<DestinationSelectorProps> = ({ onPlan
         </div>
 
         {/* Desktop Split-Screen Interactive Experience */}
-        <div className="hidden lg:grid grid-cols-12 gap-8 items-stretch min-h-[620px]">
+        <div className="hidden lg:grid grid-cols-12 gap-8 items-stretch min-h-[640px]">
           
           {/* Left Column: Interactive Destination List */}
-          <div className="col-span-5 flex flex-col justify-between space-y-1 bg-[#121418]/60 p-4 rounded-3xl border border-white/10 backdrop-blur-md">
-            <div className="space-y-1 overflow-y-auto max-h-[580px] pr-2">
+          <div className="col-span-5 flex flex-col justify-between space-y-1 glass-obsidian p-4 rounded-3xl border border-white/10 shadow-2xl backdrop-blur-xl">
+            <div className="space-y-1.5 overflow-y-auto max-h-[600px] pr-2 no-scrollbar">
               {filteredDestinations.map((dest) => {
                 const isActive = dest.id === activeDestination.id;
                 return (
@@ -88,9 +88,9 @@ export const DestinationSelector: React.FC<DestinationSelectorProps> = ({ onPlan
                     key={dest.id}
                     onMouseEnter={() => setSelectedDestId(dest.id)}
                     onClick={() => setSelectedDestId(dest.id)}
-                    className={`w-full group text-left px-5 py-3.5 rounded-2xl transition-all duration-300 flex items-center justify-between border cursor-pointer ${
+                    className={`w-full group text-left px-5 py-4 rounded-2xl transition-all duration-300 flex items-center justify-between border cursor-pointer ${
                       isActive
-                        ? 'bg-gradient-to-r from-[#C5A059]/20 to-white/5 border-[#C5A059]/50 shadow-md'
+                        ? 'bg-gradient-to-r from-[#C5A059]/25 via-white/5 to-transparent border-[#C5A059]/60 shadow-lg shadow-[#C5A059]/10'
                         : 'border-transparent hover:bg-white/5 hover:border-white/10'
                     }`}
                   >
@@ -105,12 +105,12 @@ export const DestinationSelector: React.FC<DestinationSelectorProps> = ({ onPlan
                       <div>
                         <h3
                           className={`font-display text-lg tracking-wider transition-all duration-300 ${
-                            isActive ? 'text-white font-bold translate-x-1' : 'text-[#D8CBB5]/80 group-hover:text-white'
+                            isActive ? 'text-white font-black translate-x-1.5' : 'text-[#D8CBB5]/80 group-hover:text-white'
                           }`}
                         >
                           {dest.name}
                         </h3>
-                        <p className="font-sans text-[11px] text-[#D8CBB5]/60 truncate max-w-[220px]">
+                        <p className="font-outfit text-[11px] text-[#D8CBB5]/60 truncate max-w-[220px] font-light">
                           {dest.region}
                         </p>
                       </div>
@@ -119,7 +119,7 @@ export const DestinationSelector: React.FC<DestinationSelectorProps> = ({ onPlan
                     <ArrowUpRight
                       className={`w-4 h-4 transition-all duration-300 ${
                         isActive
-                          ? 'text-[#C5A059] translate-x-0.5 -translate-y-0.5 opacity-100'
+                          ? 'text-[#C5A059] translate-x-1 -translate-y-1 opacity-100'
                           : 'text-white/20 opacity-0 group-hover:opacity-100'
                       }`}
                     />
@@ -130,7 +130,7 @@ export const DestinationSelector: React.FC<DestinationSelectorProps> = ({ onPlan
           </div>
 
           {/* Right Column: Dynamic Cinematic Screen */}
-          <div className="col-span-7 relative rounded-3xl overflow-hidden border border-white/15 group shadow-2xl flex flex-col justify-end p-8 sm:p-10">
+          <div className="col-span-7 relative rounded-3xl overflow-hidden border border-white/20 group shadow-2xl flex flex-col justify-end p-8 sm:p-12 glass-obsidian">
             
             {/* Cinematic Background Image */}
             <img
@@ -141,18 +141,18 @@ export const DestinationSelector: React.FC<DestinationSelectorProps> = ({ onPlan
             />
 
             {/* Gradient Overlays */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#08090A] via-[#08090A]/40 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#08090A]/60 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#08090A] via-[#08090A]/50 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#08090A]/70 via-transparent to-transparent" />
 
             {/* Top Info Bar */}
             <div className="absolute top-8 left-8 right-8 flex items-center justify-between z-10">
-              <div className="flex items-center gap-2 bg-black/60 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/15 text-xs font-mono text-[#C5A059]">
-                <MapPin className="w-3.5 h-3.5" />
+              <div className="flex items-center gap-2 glass-obsidian px-4 py-1.5 rounded-full border border-white/15 text-xs font-mono text-[#C5A059] shadow-lg">
+                <MapPin className="w-3.5 h-3.5 text-[#C5A059]" />
                 <span>
                   {activeDestination.coordinates.lat.toFixed(4)}° N, {activeDestination.coordinates.lng.toFixed(4)}° E
                 </span>
               </div>
-              <span className="bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/15 text-[11px] font-sans text-white/80">
+              <span className="glass-obsidian px-3.5 py-1.5 rounded-full border border-white/15 text-xs font-mono text-white/90 shadow-lg">
                 {activeDestination.elevation}
               </span>
             </div>
@@ -160,23 +160,23 @@ export const DestinationSelector: React.FC<DestinationSelectorProps> = ({ onPlan
             {/* Bottom Content Area */}
             <div className="relative z-10 space-y-4">
               <div className="flex items-center gap-3">
-                <span className="font-mono text-sm font-bold text-[#C5A059] bg-[#C5A059]/20 px-3 py-0.5 rounded-full border border-[#C5A059]/30">
+                <span className="font-mono text-xs font-bold text-[#C5A059] bg-[#C5A059]/20 px-3 py-0.5 rounded-full border border-[#C5A059]/40">
                   {activeDestination.number}
                 </span>
-                <span className="font-display text-xs tracking-[0.25em] uppercase text-[#D8CBB5]">
+                <span className="font-display text-xs tracking-[0.3em] uppercase text-[#D8CBB5] font-semibold">
                   {activeDestination.region}
                 </span>
               </div>
 
-              <h3 className="font-display text-4xl sm:text-5xl font-extrabold text-white tracking-wide">
+              <h3 className="font-display text-4xl sm:text-6xl font-black text-white tracking-wide drop-shadow-lg">
                 {activeDestination.name}
               </h3>
 
-              <p className="font-serif italic text-lg text-[#D8CBB5] max-w-xl">
+              <p className="font-serif italic text-lg sm:text-xl text-[#F3E5AB]/95 max-w-xl font-light">
                 "{activeDestination.tagline}"
               </p>
 
-              <p className="font-sans text-xs sm:text-sm text-white/80 max-w-xl line-clamp-2 leading-relaxed">
+              <p className="font-outfit text-xs sm:text-sm text-white/85 max-w-xl line-clamp-2 leading-relaxed font-light">
                 {activeDestination.description}
               </p>
 
@@ -185,7 +185,7 @@ export const DestinationSelector: React.FC<DestinationSelectorProps> = ({ onPlan
                 {activeDestination.bestKnownFor.map((item, idx) => (
                   <span
                     key={idx}
-                    className="font-sans text-[11px] px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-white"
+                    className="font-outfit text-xs px-3 py-1 rounded-full glass-obsidian border border-white/15 text-[#F3EFE6] font-medium"
                   >
                     {item}
                   </span>
@@ -196,14 +196,14 @@ export const DestinationSelector: React.FC<DestinationSelectorProps> = ({ onPlan
               <div className="flex items-center gap-4 pt-4">
                 <button
                   onClick={() => setModalDest(activeDestination)}
-                  className="flex items-center gap-2 bg-white text-[#0C0D0E] font-sans font-semibold text-xs tracking-wider uppercase px-6 py-3 rounded-full hover:bg-[#C5A059] transition-all cursor-pointer shadow-lg"
+                  className="flex items-center gap-2 bg-gradient-to-r from-[#C5A059] to-[#E2C785] hover:from-[#b08b43] hover:to-[#C5A059] text-[#08090A] font-sans font-bold text-xs tracking-wider uppercase px-7 py-3.5 rounded-full transition-all duration-300 transform hover:scale-105 cursor-pointer shadow-[0_0_20px_rgba(197,160,89,0.3)]"
                 >
-                  <span>Explore Destination</span>
+                  <span>Explore Citadel Guide</span>
                   <ChevronRight className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => onPlanTrip(activeDestination.name)}
-                  className="flex items-center gap-2 bg-black/60 hover:bg-black/90 text-white border border-white/20 font-sans font-medium text-xs tracking-wider uppercase px-5 py-3 rounded-full transition-all cursor-pointer"
+                  className="flex items-center gap-2 glass-obsidian hover:glass-gold text-white border border-white/20 font-sans font-semibold text-xs tracking-wider uppercase px-6 py-3.5 rounded-full transition-all cursor-pointer"
                 >
                   <Sparkles className="w-3.5 h-3.5 text-[#C5A059]" />
                   <span>Plan Route</span>
@@ -220,46 +220,46 @@ export const DestinationSelector: React.FC<DestinationSelectorProps> = ({ onPlan
           {filteredDestinations.map((dest) => (
             <div
               key={dest.id}
-              className="relative rounded-2xl overflow-hidden border border-white/10 bg-[#121418] group flex flex-col justify-end min-h-[420px] p-6"
+              className="relative rounded-3xl overflow-hidden border border-white/15 glass-obsidian group flex flex-col justify-end min-h-[440px] p-6 shadow-2xl"
             >
               <img
                 src={dest.image}
                 alt={dest.name}
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0C0D0E] via-[#0C0D0E]/60 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#08090A] via-[#08090A]/60 to-transparent" />
 
               <div className="relative z-10 space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs text-[#C5A059] bg-[#C5A059]/20 px-2.5 py-0.5 rounded-full border border-[#C5A059]/30">
+                  <span className="font-mono text-xs text-[#C5A059] bg-[#C5A059]/20 px-2.5 py-0.5 rounded-full border border-[#C5A059]/40 font-bold">
                     {dest.number}
                   </span>
-                  <span className="font-sans text-[10px] uppercase text-[#D8CBB5] tracking-wider">
+                  <span className="font-mono text-[10px] uppercase text-[#D8CBB5] tracking-wider font-semibold">
                     {dest.region}
                   </span>
                 </div>
 
-                <h3 className="font-display text-2xl font-bold text-white">
+                <h3 className="font-display text-2xl font-extrabold text-white">
                   {dest.name}
                 </h3>
 
-                <p className="font-sans text-xs text-[#D8CBB5] line-clamp-2">
+                <p className="font-outfit text-xs text-[#D8CBB5] line-clamp-2 font-light">
                   {dest.description}
                 </p>
 
                 <div className="pt-2 flex items-center justify-between">
                   <button
                     onClick={() => setModalDest(dest)}
-                    className="font-sans font-semibold text-xs tracking-wider uppercase text-[#C5A059] hover:underline flex items-center gap-1"
+                    className="font-sans font-bold text-xs tracking-wider uppercase text-[#C5A059] hover:underline flex items-center gap-1 cursor-pointer"
                   >
                     <span>View Guide</span>
                     <ArrowUpRight className="w-3.5 h-3.5" />
                   </button>
                   <button
                     onClick={() => onPlanTrip(dest.name)}
-                    className="p-2 rounded-full bg-white/10 text-white hover:bg-[#C5A059] hover:text-[#0C0D0E] transition-colors"
+                    className="p-2.5 rounded-full glass-gold text-white hover:text-[#C5A059] transition-colors cursor-pointer"
                   >
-                    <Sparkles className="w-4 h-4" />
+                    <Sparkles className="w-4 h-4 text-[#C5A059]" />
                   </button>
                 </div>
               </div>

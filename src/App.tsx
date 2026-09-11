@@ -18,6 +18,8 @@ import { JourneyPlanner } from './components/planner/JourneyPlanner';
 import { RegionalOverview } from './components/regions/RegionalOverview';
 import { PracticalGuide } from './components/travelGuide/PracticalGuide';
 import { FinalCTA } from './components/cta/FinalCTA';
+import { ScrollProgress } from './components/ui/ScrollProgress';
+import { FloatingQuickNav } from './components/ui/FloatingQuickNav';
 
 function MainSiteContent() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -65,7 +67,9 @@ function MainSiteContent() {
 
   return (
     <div className="min-h-screen bg-[#0C0D0E] text-[#F3EFE6] font-sans selection:bg-[#C5A059] selection:text-[#0C0D0E] overflow-x-hidden relative">
-      
+      {/* Live Global Scroll Progress Bar */}
+      <ScrollProgress />
+
       {/* Top Navigation */}
       <Header
         onOpenPlanner={handleOpenPlanner}
@@ -130,9 +134,11 @@ function MainSiteContent() {
         <FinalCTA onExplore={handleExplore} onPlan={handleOpenPlanner} />
       </main>
 
+      {/* Floating Glass Quick Jump Dock with Back-To-Top Ring */}
+      <FloatingQuickNav />
+
       {/* Grand Editorial Footer */}
       <Footer />
-
     </div>
   );
 }
