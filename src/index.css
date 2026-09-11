@@ -17,17 +17,28 @@
 
   html {
     scroll-behavior: smooth;
-    background-color: #08090A;
+    background-color: #060709;
     color: #f3efe6;
     font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior-y: none;
   }
 
   body {
     overflow-x: hidden;
     margin: 0;
     padding: 0;
-    background-color: #08090A;
+    background-color: #060709;
     color: #f3efe6;
+    contain: paint;
+  }
+
+  /* 120 FPS Smooth Section Rendering */
+  section {
+    transform: translateZ(0);
+    backface-visibility: hidden;
   }
 
   /* Custom luxury gold scrollbar */
@@ -36,12 +47,12 @@
     height: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: #08090A;
+    background: #060709;
   }
   ::-webkit-scrollbar-thumb {
-    background: #23272E;
+    background: #1E232B;
     border-radius: 9999px;
-    border: 1px solid rgba(197, 160, 89, 0.2);
+    border: 1px solid rgba(197, 160, 89, 0.25);
   }
   ::-webkit-scrollbar-thumb:hover {
     background: #C5A059;
