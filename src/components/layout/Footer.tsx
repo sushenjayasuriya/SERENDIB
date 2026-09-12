@@ -217,10 +217,29 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
+        {/* Commercial Accreditations & Payment Badges */}
+        <div className="py-8 border-b border-white/10 flex flex-col md:flex-row items-center justify-between gap-6 font-mono text-[11px] text-white/50">
+          <div className="flex flex-wrap items-center gap-4 text-center md:text-left">
+            <span className="text-[#C5A059] font-bold">SLTDA REGISTRATION: SLTDA/SQA/TA/2026/089</span>
+            <span>•</span>
+            <span>24/7 COLOMBO HOTLINE: +94 11 234 5678</span>
+            <span>•</span>
+            <span>IATA & PATA ACCREDITED</span>
+          </div>
+
+          <div className="flex items-center gap-2 text-[10px] text-white/40">
+            <span className="mr-1 text-white/60">Accepted Currencies & Cards:</span>
+            <span className="px-2 py-1 rounded bg-white/5 border border-white/10 text-white/70">VISA</span>
+            <span className="px-2 py-1 rounded bg-white/5 border border-white/10 text-white/70">MASTERCARD</span>
+            <span className="px-2 py-1 rounded bg-white/5 border border-white/10 text-white/70">AMEX</span>
+            <span className="px-2 py-1 rounded bg-white/5 border border-white/10 text-white/70">APPLE PAY</span>
+          </div>
+        </div>
+
         {/* Bottom Bar: Copyright, Admin Access & Back to top */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-sans text-xs text-white/50 font-light">
           <div className="flex items-center gap-3">
-            <p>© 2026 SERENDIB · Curated Sri Lanka Showcase.</p>
+            <p>© 2026 SERENDIB Expeditions Ltd. All Rights Reserved.</p>
             {(!isStealthMode || isAdminAuthenticated) && (
               <>
                 <span className="text-white/20">·</span>

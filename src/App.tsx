@@ -7,6 +7,7 @@ import { MobileMenu } from './components/layout/MobileMenu';
 import { Footer } from './components/layout/Footer';
 import { Hero } from './components/hero/Hero';
 import { EditorialIntro } from './components/intro/EditorialIntro';
+import { CommercialTrustBanner } from './components/commercial/CommercialTrustBanner';
 import { DestinationSelector } from './components/destinations/DestinationSelector';
 import { SriLankaMap } from './components/map/SriLankaMap';
 import { OceanBeaches } from './components/beaches/OceanBeaches';
@@ -23,9 +24,12 @@ import { AboutSerendib } from './components/about/AboutSerendib';
 import { ScrollProgress } from './components/ui/ScrollProgress';
 import { FloatingQuickNav } from './components/ui/FloatingQuickNav';
 import { CursorGlow } from './components/ui/CursorGlow';
+import { ConciergeModal } from './components/concierge/ConciergeModal';
+import { WhatsAppConcierge } from './components/commercial/WhatsAppConcierge';
 
 function MainSiteContent() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isConciergeOpen, setIsConciergeOpen] = useState(false);
   const { setIsAdminOpen } = useMedia();
 
   // Admin shortcut: Ctrl + Shift + A (or Cmd + Shift + A) or URL hash #admin or query ?admin=true
@@ -69,6 +73,10 @@ function MainSiteContent() {
     scrollToSection('destinations');
   };
 
+  const handleOpenConcierge = () => {
+    setIsConciergeOpen(true);
+  };
+
   return (
     <div className="min-h-screen bg-[#0C0D0E] text-[#F3EFE6] font-sans selection:bg-[#C5A059] selection:text-[#0C0D0E] overflow-x-hidden relative">
       {/* Live Global Scroll Progress Bar */}
@@ -80,6 +88,7 @@ function MainSiteContent() {
       {/* Top Navigation */}
       <Header
         onOpenPlanner={handleOpenPlanner}
+        onOpenConcierge={handleOpenConcierge}
         onOpenMobileMenu={() => setMobileMenuOpen(true)}
         mobileMenuOpen={mobileMenuOpen}
       />
@@ -97,12 +106,21 @@ function MainSiteContent() {
       {/* Floating Live HUD Bar for Authenticated Admin */}
       <AdminLiveBar />
 
+      {/* Bespoke Luxury Concierge Booking Modal */}
+      <ConciergeModal
+        isOpen={isConciergeOpen}
+        onClose={() => setIsConciergeOpen(false)}
+      />
+
       <main>
         {/* 1. Fullscreen Cinematic Parallax Hero */}
         <Hero onExplore={handleExplore} onPlan={handleOpenPlanner} />
 
         {/* 2. Editorial Introduction with Animated Island Metrics */}
         <EditorialIntro />
+
+        {/* 2.5 Commercial SLTDA & Luxury Trust Banner */}
+        <CommercialTrustBanner />
 
         {/* 3. Interactive Split-Screen Destination Selector */}
         <DestinationSelector onPlanTrip={handleOpenPlanner} />
@@ -146,6 +164,9 @@ function MainSiteContent() {
         {/* 15. About & Editorial Credibility */}
         <AboutSerendib />
       </main>
+
+      {/* Commercial Floating WhatsApp Concierge Button */}
+      <WhatsAppConcierge onOpenConcierge={handleOpenConcierge} />
 
       {/* Floating Glass Quick Jump Dock with Back-To-Top Ring */}
       <FloatingQuickNav />

@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Clock, Sparkles } from 'lucide-react';
+import { Menu, X, Clock, Sparkles, Send } from 'lucide-react';
 
 interface HeaderProps {
   onOpenPlanner: () => void;
+  onOpenConcierge?: () => void;
   onOpenMobileMenu: () => void;
   mobileMenuOpen: boolean;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   onOpenPlanner,
+  onOpenConcierge,
   onOpenMobileMenu,
   mobileMenuOpen
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [slTime, setSlTime] = useState('');
+  const [currency, setCurrency] = useState('USD');
 
   useEffect(() => {
     let ticking = false;
@@ -78,7 +81,7 @@ export const Header: React.FC<HeaderProps> = ({
             <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#E6CA85] animate-pulse shadow-[0_0_8px_#C5A059]" />
           </div>
           <span className="font-mono text-[8px] sm:text-[9px] tracking-[0.28em] uppercase text-[#D8CBB5]/60 -mt-0.5 font-medium">
-            Sri Lanka · The Island Beyond
+            Sri Lanka · Luxury Travel & Expeditions
           </span>
         </a>
 
@@ -99,12 +102,39 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Header Right Actions */}
         <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
           
+          {/* Currency Pill */}
+          <div className="hidden lg:flex items-center bg-white/5 border border-white/10 rounded-full px-2.5 py-1 text-[10px] font-mono text-[#E6CA85]">
+            <select
+              value={currency}
+              onChange={(e) => setCurrency(e.target.value)}
+              className="bg-transparent text-white/80 font-mono text-[10px] uppercase outline-none cursor-pointer pr-1"
+              aria-label="Currency"
+            >
+              <option value="USD" className="bg-[#0B0D12] text-white">USD ($)</option>
+              <option value="EUR" className="bg-[#0B0D12] text-white">EUR (€)</option>
+              <option value="GBP" className="bg-[#0B0D12] text-white">GBP (£)</option>
+              <option value="AUD" className="bg-[#0B0D12] text-white">AUD ($)</option>
+              <option value="LKR" className="bg-[#0B0D12] text-white">LKR (Rs)</option>
+            </select>
+          </div>
+
           {/* Live Colombo Time Pill */}
           {slTime && (
             <div className="hidden xl:flex items-center gap-1.5 text-[10px] 2xl:text-[11px] font-mono text-[#D8CBB5]/80 bg-white/5 border border-white/10 px-3 py-1.5 rounded-full shadow-sm">
               <Clock className="w-3 h-3 text-[#C5A059]" />
               <span className="text-white/90 font-medium whitespace-nowrap">COLOMBO {slTime}</span>
             </div>
+          )}
+
+          {/* Concierge Inquire Button */}
+          {onOpenConcierge && (
+            <button
+              onClick={onOpenConcierge}
+              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full glass-obsidian border border-[#C5A059]/40 hover:border-[#C5A059] text-xs font-mono uppercase tracking-wider text-[#F3E5AB] hover:text-white transition-all cursor-pointer shadow-sm"
+            >
+              <Send className="w-3 h-3 text-[#C5A059]" />
+              <span>Inquire</span>
+            </button>
           )}
 
           {/* Primary CTA */}
