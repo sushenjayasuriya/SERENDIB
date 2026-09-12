@@ -222,7 +222,9 @@ export const Footer: React.FC = () => {
           <div className="flex flex-wrap items-center gap-4 text-center md:text-left">
             <span className="text-[#C5A059] font-bold">SLTDA REGISTRATION: SLTDA/SQA/TA/2026/089</span>
             <span>•</span>
-            <span>24/7 COLOMBO HOTLINE: +94 11 234 5678</span>
+            <a href="tel:+94713912972" className="hover:text-[#C5A059] transition-colors">
+              24/7 COLOMBO CONCIERGE: +94 71 391 2972
+            </a>
             <span>•</span>
             <span>IATA & PATA ACCREDITED</span>
           </div>

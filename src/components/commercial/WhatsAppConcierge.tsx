@@ -54,13 +54,13 @@ export const WhatsAppConcierge: React.FC<WhatsAppConciergeProps> = ({ onOpenConc
             </button>
 
             <a
-              href="https://wa.me/94770000000?text=Hello%20SERENDIB%20Expeditions,%20I%20would%20like%20to%20inquire%20about%20a%20luxury%20journey%20to%20Sri%20Lanka."
+              href="https://wa.me/94713912972?text=Hello%20SERENDIB%20Expeditions,%20I%20would%20like%20to%20inquire%20about%20a%20luxury%20journey%20to%20Sri%20Lanka."
               target="_blank"
               rel="noreferrer"
               className="w-full py-2 rounded-xl bg-[#25D366]/15 hover:bg-[#25D366]/25 border border-[#25D366]/40 text-[#25D366] font-mono text-[10.5px] tracking-wide transition-colors cursor-pointer flex items-center justify-center gap-1.5"
             >
               <MessageCircle className="w-3.5 h-3.5" />
-              <span>Direct WhatsApp Chat</span>
+              <span>Direct WhatsApp (+94 71 391 2972)</span>
             </a>
           </div>
 
