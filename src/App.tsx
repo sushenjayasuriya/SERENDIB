@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { MediaProvider, useMedia } from './context/MediaContext';
 import { MediaAdminModal } from './components/admin/MediaAdminModal';
+import { AdminLiveBar } from './components/admin/AdminLiveBar';
 import { Header } from './components/layout/Header';
 import { MobileMenu } from './components/layout/MobileMenu';
 import { Footer } from './components/layout/Footer';
@@ -27,7 +28,7 @@ function MainSiteContent() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { setIsAdminOpen } = useMedia();
 
-  // Admin shortcut: Ctrl + Shift + A (or Cmd + Shift + A) or URL hash #admin
+  // Admin shortcut: Ctrl + Shift + A (or Cmd + Shift + A) or URL hash #admin or query ?admin=true
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
@@ -36,19 +37,20 @@ function MainSiteContent() {
       }
     };
 
-    const handleHashCheck = () => {
-      if (window.location.hash === '#admin') {
+    const handleUrlCheck = () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (window.location.hash === '#admin' || urlParams.get('admin') === 'true' || urlParams.get('admin') === 'studio') {
         setIsAdminOpen(true);
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('hashchange', handleHashCheck);
-    handleHashCheck();
+    window.addEventListener('hashchange', handleUrlCheck);
+    handleUrlCheck();
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('hashchange', handleHashCheck);
+      window.removeEventListener('hashchange', handleUrlCheck);
     };
   }, [setIsAdminOpen]);
 
@@ -91,6 +93,9 @@ function MainSiteContent() {
 
       {/* Media Admin Panel Modal (Passcode Protected) */}
       <MediaAdminModal />
+
+      {/* Floating Live HUD Bar for Authenticated Admin */}
+      <AdminLiveBar />
 
       <main>
         {/* 1. Fullscreen Cinematic Parallax Hero */}

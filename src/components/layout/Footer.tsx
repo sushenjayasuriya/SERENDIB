@@ -1,11 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { ArrowUp, Mail, CheckCircle2, Lock, Sparkles, Compass } from 'lucide-react';
 import { useMedia } from '../../context/MediaContext';
 
 export const Footer: React.FC = () => {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
-  const { setIsAdminOpen } = useMedia();
+  const clickCountRef = useRef(0);
+  const clickTimerRef = useRef<number | null>(null);
+  const { setIsAdminOpen, isAdminAuthenticated, isStealthMode } = useMedia();
+
+  const handleLogoClick = () => {
+    clickCountRef.current += 1;
+    if (clickCountRef.current >= 3) {
+      setIsAdminOpen(true);
+      clickCountRef.current = 0;
+      if (clickTimerRef.current) window.clearTimeout(clickTimerRef.current);
+      return;
+    }
+    if (clickTimerRef.current) window.clearTimeout(clickTimerRef.current);
+    clickTimerRef.current = window.setTimeout(() => {
+      clickCountRef.current = 0;
+    }, 1000);
+  };
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,8 +53,12 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 pb-16 border-b border-white/10">
           
           <div className="lg:col-span-5 space-y-6">
-            <div className="flex items-center gap-3">
-              <span className="font-serif tracking-[0.25em] text-3xl sm:text-4xl font-light text-[#F3EFE6]">
+            <div
+              onClick={handleLogoClick}
+              className="inline-flex items-center gap-3 cursor-pointer select-none group"
+              title="SERENDIB — Sri Lanka"
+            >
+              <span className="font-serif tracking-[0.25em] text-3xl sm:text-4xl font-light text-[#F3EFE6] group-hover:text-gold-gradient transition-colors">
                 SERENDIB
               </span>
               <span className="w-2 h-2 rounded-full bg-[#E6CA85] animate-pulse" />
@@ -201,15 +221,21 @@ export const Footer: React.FC = () => {
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-sans text-xs text-white/50 font-light">
           <div className="flex items-center gap-3">
             <p>© 2026 SERENDIB · Curated Sri Lanka Showcase.</p>
-            <span className="text-white/20">·</span>
-            <button
-              onClick={() => setIsAdminOpen(true)}
-              className="inline-flex items-center gap-1 text-white/30 hover:text-[#C5A059] transition-colors cursor-pointer text-[11px]"
-              title="Curatorial Media Admin (Press Ctrl+Shift+A)"
-            >
-              <Lock className="w-3 h-3" />
-              <span>Admin</span>
-            </button>
+            {(!isStealthMode || isAdminAuthenticated) && (
+              <>
+                <span className="text-white/20">·</span>
+                <button
+                  onClick={() => setIsAdminOpen(true)}
+                  className={`inline-flex items-center gap-1 transition-colors cursor-pointer text-[11px] ${
+                    isAdminAuthenticated ? 'text-[#C5A059] font-bold' : 'text-white/30 hover:text-[#C5A059]'
+                  }`}
+                  title="Curatorial Studio (Ctrl+Shift+A)"
+                >
+                  <Lock className="w-3 h-3" />
+                  <span>{isAdminAuthenticated ? 'Studio Active' : 'Admin'}</span>
+                </button>
+              </>
+            )}
           </div>
 
           <div className="flex items-center gap-6">
