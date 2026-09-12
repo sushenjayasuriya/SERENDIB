@@ -71,7 +71,7 @@ export const ConciergeModal: React.FC<ConciergeModalProps> = ({
                   SERENDIB BESPOKE CONCIERGE
                 </span>
                 <span className="px-2 py-0.5 rounded-full bg-[#C5A059]/20 border border-[#C5A059]/30 text-[#F3E5AB] font-mono text-[9px]">
-                  SLTDA LICENSED #2026/089
+                  VERIFIED LOCAL CURATION
                 </span>
               </div>
               <h2 className="font-serif text-lg sm:text-xl font-normal text-white">

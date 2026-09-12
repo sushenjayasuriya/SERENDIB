@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldCheck, Award, Leaf, PhoneCall } from 'lucide-react';
+import { Compass, Award, Leaf, PhoneCall } from 'lucide-react';
 
 export const CommercialTrustBanner: React.FC = () => {
   return (
@@ -9,35 +9,35 @@ export const CommercialTrustBanner: React.FC = () => {
         {/* Badges Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8 items-center">
           
-          {/* Badge 1: SLTDA Official Registration */}
+          {/* Badge 1: Authentic Independent Curation */}
           <div className="flex items-center gap-3.5 p-3.5 rounded-2xl glass-obsidian border border-white/10 hover:border-[#C5A059]/40 transition-all group">
             <div className="p-2.5 rounded-xl bg-[#C5A059]/15 text-[#C5A059] group-hover:scale-110 transition-transform">
-              <ShieldCheck className="w-6 h-6" />
+              <Compass className="w-6 h-6" />
             </div>
             <div>
               <span className="font-mono text-[10px] tracking-wider uppercase text-[#C5A059] block font-bold">
-                Official Certification
+                Field Research
               </span>
               <p className="font-sans font-medium text-xs sm:text-sm text-white">
-                SLTDA Registered
+                Authentic Curation
               </p>
-              <span className="font-mono text-[9px] text-white/50 block">Licence #2026/089</span>
+              <span className="font-mono text-[9px] text-white/50 block">9 Provinces Surveyed</span>
             </div>
           </div>
 
-          {/* Badge 2: VIP Chauffeur & Island Protection */}
+          {/* Badge 2: 24/7 Island Concierge */}
           <div className="flex items-center gap-3.5 p-3.5 rounded-2xl glass-obsidian border border-white/10 hover:border-[#C5A059]/40 transition-all group">
             <div className="p-2.5 rounded-xl bg-[#38BDF8]/15 text-[#38BDF8] group-hover:scale-110 transition-transform">
               <PhoneCall className="w-6 h-6" />
             </div>
             <div>
               <span className="font-mono text-[10px] tracking-wider uppercase text-[#38BDF8] block font-bold">
-                24/7 Island Concierge
+                Local Guidance
               </span>
               <p className="font-sans font-medium text-xs sm:text-sm text-white">
-                Dedicated Chauffeurs
+                24/7 Island Support
               </p>
-              <span className="font-mono text-[9px] text-white/50 block">Colombo HQ Support</span>
+              <span className="font-mono text-[9px] text-white/50 block">Direct WhatsApp Concierge</span>
             </div>
           </div>
 
@@ -67,7 +67,7 @@ export const CommercialTrustBanner: React.FC = () => {
                 Responsible Travel
               </span>
               <p className="font-sans font-medium text-xs sm:text-sm text-white">
-                Carbon Offset Pledge
+                Conservation Pledge
               </p>
               <span className="font-mono text-[9px] text-white/50 block">Sinharaja Rainforest Fund</span>
             </div>

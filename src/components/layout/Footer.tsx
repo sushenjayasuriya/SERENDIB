@@ -220,13 +220,13 @@ export const Footer: React.FC = () => {
         {/* Commercial Accreditations & Payment Badges */}
         <div className="py-8 border-b border-white/10 flex flex-col md:flex-row items-center justify-between gap-6 font-mono text-[11px] text-white/50">
           <div className="flex flex-wrap items-center gap-4 text-center md:text-left">
-            <span className="text-[#C5A059] font-bold">SLTDA REGISTRATION: SLTDA/SQA/TA/2026/089</span>
+            <span className="text-[#C5A059] font-bold">INDEPENDENT LUXURY EXPEDITION GUIDE</span>
             <span>•</span>
             <a href="tel:+94713912972" className="hover:text-[#C5A059] transition-colors">
-              24/7 COLOMBO CONCIERGE: +94 71 391 2972
+              24/7 ISLAND CONCIERGE: +94 71 391 2972
             </a>
             <span>•</span>
-            <span>IATA & PATA ACCREDITED</span>
+            <span>FIELD-RESEARCHED IN SRI LANKA</span>
           </div>
 
           <div className="flex items-center gap-2 text-[10px] text-white/40">
