@@ -1,15 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 export const ScrollProgress: React.FC = () => {
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const barRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    let rafScheduled = false;
+
     const handleScroll = () => {
-      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-      if (totalHeight > 0) {
-        const progress = (window.scrollY / totalHeight) * 100;
-        setScrollProgress(Math.min(100, Math.max(0, progress)));
-      }
+      if (rafScheduled) return;
+      rafScheduled = true;
+      requestAnimationFrame(() => {
+        rafScheduled = false;
+        const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+        if (totalHeight > 0 && barRef.current) {
+          const pct = Math.min(100, Math.max(0, (window.scrollY / totalHeight) * 100));
+          barRef.current.style.width = `${pct}%`;
+        }
+      });
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -19,8 +26,9 @@ export const ScrollProgress: React.FC = () => {
   return (
     <div className="fixed top-0 left-0 right-0 h-[3px] z-50 bg-transparent pointer-events-none">
       <div
-        className="h-full bg-gradient-to-r from-[#C5A059] via-[#F3E5AB] to-[#C85A32] transition-all duration-150 ease-out shadow-[0_0_12px_rgba(197,160,89,0.8)]"
-        style={{ width: `${scrollProgress}%` }}
+        ref={barRef}
+        className="h-full bg-gradient-to-r from-[#C5A059] via-[#F3E5AB] to-[#C85A32] shadow-[0_0_12px_rgba(197,160,89,0.8)]"
+        style={{ width: '0%' }}
       />
     </div>
   );

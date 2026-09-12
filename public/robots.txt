@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /#admin
 
-Sitemap: https://serendib-570fa.web.app/sitemap.xml
+Sitemap: https://sl.sushenjayasuriya.org.lk/sitemap.xml

@@ -1,38 +1,47 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 export const CursorGlow: React.FC = () => {
-  const [pos, setPos] = useState({ x: -100, y: -100 });
-  const [isPointerFine, setIsPointerFine] = useState(false);
+  const glowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Only enable on pointer-fine devices (mouse/trackpad, not touch screens)
-    const mediaQuery = window.matchMedia('(pointer: fine)');
-    setIsPointerFine(mediaQuery.matches);
+    if (!window.matchMedia('(pointer: fine)').matches) return;
 
     let animationFrameId: number;
-    let targetX = -100;
-    let targetY = -100;
-    let currentX = -100;
-    let currentY = -100;
+    let targetX = -200;
+    let targetY = -200;
+    let currentX = -200;
+    let currentY = -200;
+    let rafScheduled = false;
 
     const handleMouseMove = (e: MouseEvent) => {
       targetX = e.clientX;
       targetY = e.clientY;
+      if (!rafScheduled) {
+        rafScheduled = true;
+        animationFrameId = requestAnimationFrame(updatePosition);
+      }
     };
 
     const updatePosition = () => {
-      // Smooth lerp (linear interpolation) for fluid 120 FPS motion
+      rafScheduled = false;
+      // Smooth lerp — direct DOM write, zero React re-renders
       currentX += (targetX - currentX) * 0.15;
       currentY += (targetY - currentY) * 0.15;
 
-      setPos({ x: currentX, y: currentY });
-      animationFrameId = requestAnimationFrame(updatePosition);
+      if (glowRef.current) {
+        glowRef.current.style.transform = `translate(${currentX - 175}px, ${currentY - 175}px)`;
+        glowRef.current.style.opacity = currentX < -100 ? '0' : '0.6';
+      }
+
+      // Keep lerping until settled
+      if (Math.abs(targetX - currentX) > 0.5 || Math.abs(targetY - currentY) > 0.5) {
+        rafScheduled = true;
+        animationFrameId = requestAnimationFrame(updatePosition);
+      }
     };
 
-    if (mediaQuery.matches) {
-      window.addEventListener('mousemove', handleMouseMove, { passive: true });
-      animationFrameId = requestAnimationFrame(updatePosition);
-    }
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
@@ -40,19 +49,18 @@ export const CursorGlow: React.FC = () => {
     };
   }, []);
 
-  if (!isPointerFine || pos.x < 0) return null;
-
   return (
     <div
+      ref={glowRef}
       aria-hidden="true"
-      className="pointer-events-none fixed z-30 transform -translate-x-1/2 -translate-y-1/2 will-change-transform transition-opacity duration-300 opacity-60"
+      className="pointer-events-none fixed z-30 top-0 left-0 will-change-transform"
       style={{
-        left: `${pos.x}px`,
-        top: `${pos.y}px`,
         width: '350px',
         height: '350px',
         background: 'radial-gradient(circle, rgba(197, 160, 89, 0.08) 0%, rgba(197, 160, 89, 0.02) 45%, transparent 70%)',
         borderRadius: '50%',
+        opacity: 0,
+        transform: 'translate(-200px, -200px)',
       }}
     />
   );

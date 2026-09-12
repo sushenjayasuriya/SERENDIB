@@ -1,36 +1,51 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ArrowUp, Map, Waves, Mountain, ShieldCheck, Utensils, Calendar, Sparkles, Compass } from 'lucide-react';
 
 export const FloatingQuickNav: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const progressRef = useRef(0);
+  const ringRef = useRef<SVGPathElement>(null);
+  const tooltipTextRef = useRef<HTMLSpanElement>(null);
+  const titleProgressRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-      const totalHeight = (document.documentElement.scrollHeight || document.body.scrollHeight) - window.innerHeight;
-      
-      if (scrollY > 150) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-        setIsExpanded(false);
-      }
+    let rafScheduled = false;
 
-      if (totalHeight > 0) {
-        setScrollProgress(Math.min(100, Math.max(0, (scrollY / totalHeight) * 100)));
-      }
+    const handleScroll = () => {
+      if (rafScheduled) return;
+      rafScheduled = true;
+      requestAnimationFrame(() => {
+        rafScheduled = false;
+        const scrollY = window.scrollY;
+        const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+        setIsVisible(scrollY > 150);
+        if (scrollY <= 150) setIsExpanded(false);
+
+        if (totalHeight > 0) {
+          const pct = Math.min(100, Math.max(0, (scrollY / totalHeight) * 100));
+          progressRef.current = pct;
+          // Direct DOM writes — no React re-render
+          if (ringRef.current) {
+            ringRef.current.setAttribute('stroke-dasharray', `${pct}, 100`);
+          }
+          if (tooltipTextRef.current) {
+            tooltipTextRef.current.textContent = `Scroll to Top (${Math.round(pct)}%)`;
+          }
+          if (titleProgressRef.current) {
+            titleProgressRef.current.textContent = `${Math.round(pct)}%`;
+          }
+        }
+      });
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true, capture: true });
-    document.addEventListener('scroll', handleScroll, { passive: true, capture: true });
+    window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
-    
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      document.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
@@ -74,7 +89,7 @@ export const FloatingQuickNav: React.FC = () => {
         <div className="bg-[#0B0D12]/95 border border-[#C5A059]/50 p-3 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.95)] backdrop-blur-2xl flex flex-col gap-1.5 min-w-[210px] animate-in fade-in zoom-in-95 slide-in-from-bottom-4 duration-300">
           <div className="px-3 py-1.5 border-b border-white/10 flex items-center justify-between text-[10px] font-mono tracking-widest text-[#E6CA85] uppercase">
             <span>Island Waypoints</span>
-            <span className="text-[#C5A059] font-bold">{Math.round(scrollProgress)}%</span>
+            <span ref={titleProgressRef} className="text-[#C5A059] font-bold">0%</span>
           </div>
           {quickLinks.map((link) => (
             <button
@@ -112,7 +127,7 @@ export const FloatingQuickNav: React.FC = () => {
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
           aria-label="Scroll back to top of page"
-          title={`Scroll to top (${Math.round(scrollProgress)}%)`}
+          title={`Scroll to top (${Math.round(progressRef.current)}%)`}
           className="relative w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-gradient-to-b from-[#141822] to-[#0A0C10] border-2 border-[#C5A059] flex items-center justify-center text-[#F3EFE6] hover:text-[#E6CA85] transition-all duration-300 shadow-[0_10px_35px_rgba(0,0,0,0.9),0_0_20px_rgba(197,160,89,0.4)] group cursor-pointer backdrop-blur-2xl hover:scale-110 active:scale-95 animate-beacon"
         >
           {/* Animated Circular Progress Ring */}
@@ -125,8 +140,9 @@ export const FloatingQuickNav: React.FC = () => {
               d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
             />
             <path
-              className="text-[#E6CA85] transition-all duration-200 ease-out"
-              strokeDasharray={`${scrollProgress}, 100`}
+              ref={ringRef}
+              className="text-[#E6CA85] transition-[stroke-dasharray] duration-200 ease-out"
+              strokeDasharray="0, 100"
               strokeWidth="2.8"
               strokeLinecap="round"
               stroke="currentColor"
@@ -147,8 +163,8 @@ export const FloatingQuickNav: React.FC = () => {
 
           {/* Tooltip on hover */}
           {isHovered && (
-            <span className="absolute -top-9 px-3 py-1 rounded-md bg-[#0C0D0E] border border-[#C5A059]/60 text-[10px] font-mono text-[#E6CA85] whitespace-nowrap shadow-2xl animate-in fade-in duration-200">
-              Scroll to Top ({Math.round(scrollProgress)}%)
+            <span ref={tooltipTextRef} className="absolute -top-9 px-3 py-1 rounded-md bg-[#0C0D0E] border border-[#C5A059]/60 text-[10px] font-mono text-[#E6CA85] whitespace-nowrap shadow-2xl animate-in fade-in duration-200">
+              Scroll to Top (0%)
             </span>
           )}
         </button>

@@ -18,6 +18,7 @@ import { JourneyPlanner } from './components/planner/JourneyPlanner';
 import { RegionalOverview } from './components/regions/RegionalOverview';
 import { PracticalGuide } from './components/travelGuide/PracticalGuide';
 import { FinalCTA } from './components/cta/FinalCTA';
+import { AboutSerendib } from './components/about/AboutSerendib';
 import { ScrollProgress } from './components/ui/ScrollProgress';
 import { FloatingQuickNav } from './components/ui/FloatingQuickNav';
 import { CursorGlow } from './components/ui/CursorGlow';
@@ -136,6 +137,9 @@ function MainSiteContent() {
 
         {/* 14. Dramatic Final CTA */}
         <FinalCTA onExplore={handleExplore} onPlan={handleOpenPlanner} />
+
+        {/* 15. About & Editorial Credibility */}
+        <AboutSerendib />
       </main>
 
       {/* Floating Glass Quick Jump Dock with Back-To-Top Ring */}
