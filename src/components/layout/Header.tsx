@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Clock, Sparkles, Send } from 'lucide-react';
+import { Menu, X, Clock, Sparkles } from 'lucide-react';
 
 interface HeaderProps {
   onOpenPlanner: () => void;
-  onOpenConcierge?: () => void;
   onOpenMobileMenu: () => void;
   mobileMenuOpen: boolean;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   onOpenPlanner,
-  onOpenConcierge,
   onOpenMobileMenu,
   mobileMenuOpen
 }) => {
@@ -124,17 +122,6 @@ export const Header: React.FC<HeaderProps> = ({
               <Clock className="w-3 h-3 text-[#C5A059]" />
               <span className="text-white/90 font-medium whitespace-nowrap">COLOMBO {slTime}</span>
             </div>
-          )}
-
-          {/* Concierge Inquire Button */}
-          {onOpenConcierge && (
-            <button
-              onClick={onOpenConcierge}
-              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full glass-obsidian border border-[#C5A059]/40 hover:border-[#C5A059] text-xs font-mono uppercase tracking-wider text-[#F3E5AB] hover:text-white transition-all cursor-pointer shadow-sm"
-            >
-              <Send className="w-3 h-3 text-[#C5A059]" />
-              <span>Inquire</span>
-            </button>
           )}
 
           {/* Primary CTA */}

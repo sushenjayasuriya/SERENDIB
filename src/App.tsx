@@ -88,7 +88,6 @@ function MainSiteContent() {
       {/* Top Navigation */}
       <Header
         onOpenPlanner={handleOpenPlanner}
-        onOpenConcierge={handleOpenConcierge}
         onOpenMobileMenu={() => setMobileMenuOpen(true)}
         mobileMenuOpen={mobileMenuOpen}
       />
