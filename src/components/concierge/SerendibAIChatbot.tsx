@@ -127,6 +127,51 @@ export const SerendibAIChatbot: React.FC<SerendibAIChatbotProps> = ({ onOpenBook
     ]);
   };
 
+  const renderFormattedMessage = (content: string, isUser: boolean) => {
+    if (isUser) {
+      return <div className="whitespace-pre-line break-words">{content}</div>;
+    }
+
+    const lines = content.split('\n');
+
+    return (
+      <div className="space-y-1.5 break-words">
+        {lines.map((line, lineIdx) => {
+          if (!line.trim()) {
+            return <div key={lineIdx} className="h-1" />;
+          }
+
+          // Parse inline bold (**text**) and code (`code`)
+          const parts = line.split(/(\*\*[^*]+\*\*|`[^`]+`)/g);
+
+          return (
+            <p key={lineIdx} className="leading-relaxed">
+              {parts.map((part, partIdx) => {
+                if (part.startsWith('**') && part.endsWith('**')) {
+                  const inner = part.slice(2, -2);
+                  return (
+                    <strong key={partIdx} className="text-[#F3EFE6] font-semibold">
+                      {inner}
+                    </strong>
+                  );
+                }
+                if (part.startsWith('`') && part.endsWith('`')) {
+                  const inner = part.slice(1, -1);
+                  return (
+                    <code key={partIdx} className="font-mono text-[#E6CA85] bg-white/10 px-1.5 py-0.5 rounded text-[11px] border border-white/10">
+                      {inner}
+                    </code>
+                  );
+                }
+                return part;
+              })}
+            </p>
+          );
+        })}
+      </div>
+    );
+  };
+
   return (
     <>
       {/* Floating Trigger Orb */}
@@ -226,9 +271,7 @@ export const SerendibAIChatbot: React.FC<SerendibAIChatbotProps> = ({ onOpenBook
                       : 'bg-white/5 border border-white/10 text-[#F3EFE6]/90 rounded-bl-none'
                   }`}
                 >
-                  <div className="whitespace-pre-line break-words">
-                    {msg.text}
-                  </div>
+                  {renderFormattedMessage(msg.text, msg.sender === 'user')}
                 </div>
 
                 {/* Message Interactive Action Cards */}

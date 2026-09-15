@@ -82,7 +82,7 @@ export const KNOWLEDGE_BASE: ChatbotResponse[] = [
   // 6. CEYLON CUISINE & FOOD
   {
     keywords: ['food', 'cuisine', 'eat', 'curry', 'spices', 'tea', 'hoppers', 'kottu', 'dining', 'gastronomy', 'seafood'],
-    reply: "Ceylon gastronomy is a vibrant explosion of wild spices, roasted coconut, and fresh ocean seafood:\n\n🍛 **Must-Try Culinary Icons:**\n• **Egg Hoppers (Appa):** Crisp bowl-shaped rice flour pancakes with soft steamed centers and spicy lunu miris.\n• **Jaffna Blue Crab Curry:** Rich roasted roasted spices infused with toasted cumin, coriander, and fresh tamarind.\n• **Kottu Rhapsody:** Chopped flatbread wok-fried on hot steel with leeks, eggs, and aromatic curry sauce.\n• **Single-Estate Ceylon Tea:** Pure high-altitude orthodox teas from Nuwara Eliya and Dimbula.",
+    reply: "Ceylon gastronomy is a vibrant explosion of wild spices, roasted coconut, and fresh ocean seafood:\n\n🍛 **Must-Try Culinary Icons:**\n• **Egg Hoppers (Appa):** Crisp bowl-shaped rice flour pancakes with soft steamed centers and spicy lunu miris.\n• **Jaffna Blue Crab Curry:** Rich roasted spices infused with toasted cumin, coriander, and fresh tamarind.\n• **Kottu Rhapsody:** Chopped flatbread wok-fried on hot steel with leeks, eggs, and aromatic curry sauce.\n• **Single-Estate Ceylon Tea:** Pure high-altitude orthodox teas from Nuwara Eliya and Dimbula.",
     actions: [
       { label: '🍲 Ceylon Culinary Explorer', type: 'navigate', payload: '/cuisine' }
     ]
@@ -101,7 +101,7 @@ export const KNOWLEDGE_BASE: ChatbotResponse[] = [
   // 8. VISA / ETA / PRACTICAL ADVICE / CURRENCY
   {
     keywords: ['visa', 'eta', 'currency', 'money', 'lkr', 'usd', 'cash', 'card', 'safety', 'hotline', 'emergency', 'sim', 'airport'],
-    reply: "📋 **Practical Travel Essentials for Sri Lanka:**\n\n• **Visa (ETA):** Most international travelers require an approved Electronic Travel Authorization (ETA) prior to arrival via the official portal.\n• **Currency:** Sri Lankan Rupee (LKR). Major cards (Visa, Mastercard, Amex) are widely accepted in hotels and luxury boutiques. Carrying small LKR cash notes for local tea stalls and tuk-tuks is recommended.\n• **Emergency Numbers:** Tourist Police (**1912**), Emergency Ambulance (**1990**), National Emergency (**119**).\n• **Airport Transfer:** Colombo Bandaranaike International Airport (CMB) is 35 minutes to central Colombo via the expressway.",
+    reply: "📋 **Practical Travel Essentials for Sri Lanka:**\n\n• **Visa (ETA):** Most international travelers require an approved Electronic Travel Authorization (ETA) prior to arrival via the official portal.\n• **Currency:** Sri Lankan Rupee (LKR). Major cards (Visa, Mastercard, Amex) are widely accepted in hotels and luxury boutiques. Carrying small LKR cash notes for local tea stalls and tuk-tuks is recommended.\n• **Emergency Numbers:** Tourist Police (`1912`), Emergency Ambulance (`1990`), National Emergency (`119`).\n• **Airport Transfer:** Colombo Bandaranaike International Airport (CMB) is 35 minutes to central Colombo via the expressway.",
     actions: [
       { label: '📘 Practical Travel Compendium', type: 'navigate', payload: '/guide' }
     ]
@@ -119,7 +119,7 @@ export const KNOWLEDGE_BASE: ChatbotResponse[] = [
   // 10. HUMAN CONCIERGE / CONTACT / PHONE / WHATSAPP / BOOKING
   {
     keywords: ['contact', 'whatsapp', 'call', 'phone', 'human', 'agent', 'concierge', 'speak', 'book', 'reservation', 'cost', 'quote', 'number'],
-    reply: "Our private **24/7 Island Concierge Team** is on standby to assist with custom quotes, private luxury vehicle bookings, English/German/French-speaking chauffeur-guides, and VIP airport fast-track service.\n\n📞 **Direct WhatsApp & Hotline:** **+94 71 391 2972** (`0713912972`)\n📧 **Email:** `concierge@sushenjayasuriya.org.lk`\n📍 **Colombo Studio:** Colombo 03, Western Province, Sri Lanka",
+    reply: "Our private **24/7 Island Concierge Team** is on standby to assist with custom quotes, private luxury vehicle bookings, English/German/French-speaking chauffeur-guides, and VIP airport fast-track service.\n\n📞 **Direct WhatsApp & Hotline:** `+94 71 391 2972` (`0713912972`)\n📧 **Email:** `concierge@sushenjayasuriya.org.lk`\n📍 **Colombo Studio:** Colombo 03, Western Province, Sri Lanka",
     actions: [
       { label: '💬 Chat on WhatsApp (+94 71 391 2972)', type: 'whatsapp', payload: '94713912972' },
       { label: '🛎️ Open Reservation Form', type: 'modal' }
@@ -140,7 +140,7 @@ export function findChatbotResponse(userMessage: string): ChatbotResponse {
   // Graceful smart fallback
   return {
     keywords: [],
-    reply: "I have noted your inquiry regarding Sri Lanka. While I am an automated expedition specialist, our **24/7 Island Concierge Desk** can provide exact bespoke arrangements, private helicopter quotes, or tailored itinerary answers immediately.\n\nWould you like to speak directly with our team on WhatsApp (**+94 71 391 2972**)?",
+    reply: "I have noted your inquiry regarding Sri Lanka. While I am an automated expedition specialist, our **24/7 Island Concierge Desk** can provide exact bespoke arrangements, private helicopter quotes, or tailored itinerary answers immediately.\n\nWould you like to speak directly with our team on WhatsApp (`+94 71 391 2972`)?",
     actions: [
       { label: '💬 Message Concierge (+94 71 391 2972)', type: 'whatsapp', payload: '94713912972' },
       { label: '🗺️ Explore GIS Island Map', type: 'navigate', payload: '/map' },
