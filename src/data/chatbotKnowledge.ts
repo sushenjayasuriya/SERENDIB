@@ -225,8 +225,58 @@ export const KNOWLEDGE_BASE: ChatbotResponse[] = [
 
 export function findChatbotResponse(userMessage: string): ChatbotResponse {
   const normalized = userMessage.toLowerCase().trim();
+  const cleanTokens = normalized.replace(/[^\w\s]/g, '').split(/\s+/);
 
-  // Check if user is requesting the quiz
+  // 1. GREETINGS (Hi, Hello, Hey, Ayubowan, Good Morning/Evening, etc.)
+  const greetingWords = ['hi', 'hello', 'hey', 'ayubowan', 'vanakkam', 'greetings', 'howdy', 'yo', 'halo', 'ola', 'bonjour', 'namaste'];
+  const isGreeting = 
+    greetingWords.some(w => cleanTokens.includes(w)) ||
+    normalized.startsWith('good morning') ||
+    normalized.startsWith('good afternoon') ||
+    normalized.startsWith('good evening') ||
+    normalized.startsWith('good day');
+
+  if (isGreeting) {
+    return {
+      keywords: ['greeting'],
+      reply: "Ayubowan & warm greetings! I am **Serendib AI**, your private Island Expedition Concierge.\n\nWhether you are planning to discover ancient 5th-century royal citadels, ride the misty blue train through Ceylon tea hills, encounter wild leopards, or bask on southern surf beaches, I am here to assist.\n\nHow would you like to begin your journey?",
+      cards: [DESTINATION_CARDS.sigiriya, DESTINATION_CARDS.ella, DESTINATION_CARDS.yala],
+      actions: [
+        { label: '✨ Start Expedition Quiz', type: 'quiz_step', payload: 'start' },
+        { label: '🗺️ Explore GIS Island Map', type: 'navigate', payload: '/map' },
+        { label: '📅 Plan 7-Day Route', type: 'navigate', payload: '/planner' }
+      ]
+    };
+  }
+
+  // 2. GRATITUDE (Thanks, Thank you, Cheers, etc.)
+  const thanksWords = ['thanks', 'thank', 'thx', 'cheers', 'appreciate', 'grateful', 'awesome', 'perfect', 'great'];
+  if (thanksWords.some(w => cleanTokens.includes(w))) {
+    return {
+      keywords: ['thanks'],
+      reply: "You are most welcome! It is an absolute pleasure assisting your Sri Lankan voyage.\n\nIf you have any further questions or wish to connect with our human concierge team for chauffeur bookings, I am always here.",
+      actions: [
+        { label: '💬 WhatsApp Concierge (+94 71 391 2972)', type: 'whatsapp', payload: '94713912972' },
+        { label: '✨ Take Expedition Quiz', type: 'quiz_step', payload: 'start' },
+        { label: '🗺️ Back to Map', type: 'navigate', payload: '/map' }
+      ]
+    };
+  }
+
+  // 3. CAPABILITIES / WHO ARE YOU / HELP
+  if (normalized.includes('who are you') || normalized.includes('what can you do') || normalized === 'help') {
+    return {
+      keywords: ['help'],
+      reply: "I am **Serendib AI**, an interactive expedition intelligence assistant created for travelers discovering Sri Lanka.\n\nHere is what I can do for you:\n• **Plan Expeditions:** Take our 3-step interactive route quiz.\n• **Weather & Monsoons:** Clarify when to visit South vs. East coasts.\n• **Wonders & Heritage:** In-depth knowledge on Sigiriya, Kandy, Galle Fort, and Anuradhapura.\n• **Wildlife & Rail:** Logistics on Yala leopards, Minneriya elephants, and the Kandy-Ella scenic train.\n• **Concierge Handoff:** Connect directly with our private chauffeur dispatch team on WhatsApp.",
+      cards: [DESTINATION_CARDS.sigiriya, DESTINATION_CARDS.mirissa],
+      actions: [
+        { label: '✨ Start Expedition Quiz', type: 'quiz_step', payload: 'start' },
+        { label: '🗺️ Explore GIS Map', type: 'navigate', payload: '/map' }
+      ]
+    };
+  }
+
+  // 4. Check if user is requesting the quiz
   if (normalized.includes('quiz') || normalized.includes('build expedition') || normalized.includes('help me choose') || normalized.includes('quiz me')) {
     return {
       keywords: ['quiz'],
@@ -241,7 +291,7 @@ export function findChatbotResponse(userMessage: string): ChatbotResponse {
     };
   }
 
-  // Search knowledge base
+  // 5. Search knowledge base
   for (const item of KNOWLEDGE_BASE) {
     if (item.keywords.some(kw => normalized.includes(kw))) {
       return item;
