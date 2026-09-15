@@ -32,7 +32,7 @@
 * **Multi-Turn "Bespoke Expedition Quiz" Mode:** 3-step interactive dialogue tailored to travel focus, duration, and pace, synthesizing a custom route proposal.
 * **Rich Visual Destination Cards:** In-chat horizontal carousels with high-definition photography, region badges, and deep links.
 * **Automated Session-Aware Popup:** Slides up after a thoughtful 6.5s delay on initial visitor arrival (`sessionStorage` guarded).
-* **1-Click WhatsApp Hand-Off:** Pre-fills the traveler's custom itinerary details directly to the private concierge hotline (`+94 71 391 2972`).
+* **1-Click WhatsApp Hand-Off:** Pre-fills the traveler's custom itinerary details directly to the private Island Concierge desk.
 
 ### 🔗 3. Clean Semantic HTML5 Routing & Dynamic ScrollSpy
 * Complete elimination of hashtag fragments (`#` or `/#`) in favor of clean semantic routes:
@@ -131,7 +131,7 @@ npx firebase-tools deploy --only hosting
 ## 📞 Commercial Concierge & Support
 
 * **Official Portal:** [https://sl.sushenjayasuriya.org.lk/](https://sl.sushenjayasuriya.org.lk/)
-* **WhatsApp Hotline:** `+94 71 391 2972` (`https://wa.me/94713912972`)
+* **Island Concierge:** Available 24/7 via the on-site WhatsApp Concierge widget
 * **Email:** `concierge@sushenjayasuriya.org.lk`
 * **Headquarters:** Colombo 03, Western Province, Sri Lanka
 
