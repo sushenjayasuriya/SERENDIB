@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ArrowUp, Map, Waves, Mountain, ShieldCheck, Utensils, Calendar, Sparkles, Compass } from 'lucide-react';
+import { navigateToSection } from '../../utils/navigation';
 
 export const FloatingQuickNav: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -50,18 +51,13 @@ export const FloatingQuickNav: React.FC = () => {
   }, []);
 
   const scrollTo = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
+    navigateToSection(id);
     setIsExpanded(false);
   };
 
   const scrollToTop = (e?: React.MouseEvent) => {
     if (e) e.preventDefault();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
-    document.body.scrollTo({ top: 0, behavior: 'smooth' });
+    navigateToSection('/');
     setIsExpanded(false);
   };
 

@@ -50,7 +50,34 @@ SERENDIB is a high-performance, responsive, luxury travel platform designed with
 
 ---
 
-## 🔒 3. Administrator & Curatorial Studio Manual
+## 🔗 3. Clean Semantic URL Routing & Deep Linking
+
+The platform utilizes a **Clean HTML5 Semantic Routing Engine** (`src/utils/navigation.ts`, `src/hooks/useScrollSpy.ts`) that eliminates hashtag fragments (`#` or `/#`) and dynamically synchronizes URL paths and document titles:
+
+| Semantic Route | Target Section | Document Title |
+|---|---|---|
+| `/` | Home / Hero | `SERENDIB — Sri Lanka Luxury Travel & Bespoke Expedition Guide` |
+| `/about` | Philosophy & Introduction | `The Serendib Philosophy \| Sri Lanka Bespoke Expeditions` |
+| `/destinations` | Citadels & Coasts | `Destinations & Royal Citadels \| SERENDIB` |
+| `/map` | Interactive GIS Cartography | `Interactive GIS Expedition Map of Sri Lanka \| SERENDIB` |
+| `/beaches` | Ocean Bays & Surf | `Turquoise Ocean Beaches & Surf Coastlines \| SERENDIB` |
+| `/highlands` | Tea Country & Scenic Rail | `Misty Highlands, Ceylon Tea & Scenic Rail \| SERENDIB` |
+| `/wildlife` | Big 5 Sanctuaries | `Big 5 Wildlife Sanctuaries & Leopard Corridors \| SERENDIB` |
+| `/heritage` | 2,500 Years History | `2,500 Years Ancient Heritage & Sacred Citadels \| SERENDIB` |
+| `/cuisine` | Ceylon Gastronomy | `Ceylon Culinary Arts, Spices & Gastronomy \| SERENDIB` |
+| `/experiences` | 10 Bucket-List Moments | `10 Iconic Bucket-List Island Expeditions \| SERENDIB` |
+| `/regions` | The 6 Realms | `The 6 Island Realms & Microclimates \| SERENDIB` |
+| `/guide` | Practical Logistics | `Practical Island Travel Guide & Monsoons \| SERENDIB` |
+| `/planner` | Trip Architect | `Bespoke Itinerary & Expedition Architect \| SERENDIB` |
+
+**Routing Capabilities:**
+1. **Direct Deep Linking:** Visitors can directly open or share `https://sl.sushenjayasuriya.org.lk/map` or `https://sl.sushenjayasuriya.org.lk/beaches` and the site will automatically navigate to that exact section.
+2. **Dynamic ScrollSpy:** As visitors scroll through the page, the address bar smoothly reflects the active section via `history.replaceState` without triggering page jumps.
+3. **Browser History (Back/Forward):** Native support for browser Back and Forward navigation buttons.
+
+---
+
+## 🔒 4. Administrator & Curatorial Studio Manual
 
 The site features a client-side **Curatorial Studio & CMS** allowing live modification of imagery, copywriting, and datasets without writing code.
 

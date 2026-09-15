@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Sparkles } from 'lucide-react';
+import { navigateToSection } from '../../utils/navigation';
 
 interface HeaderProps {
   onOpenPlanner: () => void;
@@ -30,16 +31,21 @@ export const Header: React.FC<HeaderProps> = ({
   }, []);
 
   const navLinks = [
-    { label: 'DESTINATIONS', href: '#destinations' },
-    { label: 'MAP', href: '#map' },
-    { label: 'BEACHES', href: '#beaches' },
-    { label: 'HIGHLANDS', href: '#highlands' },
-    { label: 'WILDLIFE', href: '#wildlife' },
-    { label: 'HERITAGE', href: '#heritage' },
-    { label: 'CUISINE', href: '#food' },
-    { label: 'EXPERIENCES', href: '#experiences' },
-    { label: 'GUIDE', href: '#travel-guide' },
+    { label: 'DESTINATIONS', path: '/destinations', targetId: 'destinations' },
+    { label: 'MAP', path: '/map', targetId: 'map' },
+    { label: 'BEACHES', path: '/beaches', targetId: 'beaches' },
+    { label: 'HIGHLANDS', path: '/highlands', targetId: 'highlands' },
+    { label: 'WILDLIFE', path: '/wildlife', targetId: 'wildlife' },
+    { label: 'HERITAGE', path: '/heritage', targetId: 'heritage' },
+    { label: 'CUISINE', path: '/cuisine', targetId: 'food' },
+    { label: 'EXPERIENCES', path: '/experiences', targetId: 'experiences' },
+    { label: 'GUIDE', path: '/guide', targetId: 'travel-guide' },
   ];
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+    e.preventDefault();
+    navigateToSection(path);
+  };
 
   return (
     <header
@@ -52,7 +58,11 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
         
         {/* Brand Logo */}
-        <a href="#" className="group flex flex-col items-start focus:outline-none flex-shrink-0">
+        <a
+          href="/"
+          onClick={(e) => handleNavClick(e, '/')}
+          className="group flex flex-col items-start focus:outline-none flex-shrink-0 cursor-pointer"
+        >
           <div className="flex items-center gap-2">
             <span className="font-serif tracking-[0.22em] text-lg sm:text-2xl font-black text-[#F3EFE6] group-hover:text-gold-gradient transition-colors">
               SERENDIB
@@ -69,8 +79,9 @@ export const Header: React.FC<HeaderProps> = ({
           {navLinks.map((link) => (
             <a
               key={link.label}
-              href={link.href}
-              className="text-[10.5px] 2xl:text-[11px] font-sans font-semibold tracking-[0.14em] text-[#F3EFE6]/75 hover:text-[#C5A059] transition-all duration-200 py-1 relative group whitespace-nowrap"
+              href={link.path}
+              onClick={(e) => handleNavClick(e, link.path)}
+              className="text-[10.5px] 2xl:text-[11px] font-sans font-semibold tracking-[0.14em] text-[#F3EFE6]/75 hover:text-[#C5A059] transition-all duration-200 py-1 relative group whitespace-nowrap cursor-pointer"
             >
               {link.label}
               <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-gradient-to-r from-[#C5A059] to-[#F3E5AB] transition-all duration-300 group-hover:w-full" />

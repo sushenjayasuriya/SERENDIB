@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Sparkles, X, ArrowRight } from 'lucide-react';
+import { navigateToSection } from '../../utils/navigation';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -14,69 +15,75 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, onOpenP
     {
       num: '01',
       label: 'Destinations',
-      subtitle: '10 Iconic Regions & Cities',
-      href: '#destinations',
+      subtitle: '10 Iconic Regions & Royal Citadels',
+      path: '/destinations',
       image: 'https://images.unsplash.com/photo-1588598198321-9735fd52455b?auto=format&fit=crop&w=800&q=80'
     },
     {
       num: '02',
       label: 'Interactive Map',
-      subtitle: 'Island Vector Cartography',
-      href: '#map',
+      subtitle: 'Island Vector Cartography & Rail',
+      path: '/map',
       image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=800&q=80'
     },
     {
       num: '03',
       label: 'Beaches & Surf',
       subtitle: 'Indian Ocean Coastlines',
-      href: '#beaches',
+      path: '/beaches',
       image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80'
     },
     {
       num: '04',
       label: 'Highlands & Tea',
       subtitle: 'Misty Mountains & Blue Train',
-      href: '#highlands',
+      path: '/highlands',
       image: 'https://images.unsplash.com/photo-1586861635167-e5223aadc9fe?auto=format&fit=crop&w=800&q=80'
     },
     {
       num: '05',
       label: 'Wildlife Sanctuaries',
       subtitle: 'Leopards, Elephants & Whales',
-      href: '#wildlife',
+      path: '/wildlife',
       image: 'https://images.unsplash.com/photo-1561731216-c3a4d99437d5?auto=format&fit=crop&w=800&q=80'
     },
     {
       num: '06',
       label: 'Heritage & Kingdoms',
       subtitle: '2,500 Years of Stories',
-      href: '#heritage',
+      path: '/heritage',
       image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80'
     },
     {
       num: '07',
       label: 'Taste the Island',
       subtitle: 'Ceylon Spices & Night Street Rhapsody',
-      href: '#food',
+      path: '/cuisine',
       image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=800&q=80'
     },
     {
       num: '08',
       label: 'Bucket-List Moments',
       subtitle: '10 Things Worth Crossing an Ocean For',
-      href: '#experiences',
+      path: '/experiences',
       image: 'https://images.unsplash.com/photo-1502680390469-be75c86b636f?auto=format&fit=crop&w=800&q=80'
     },
     {
       num: '09',
       label: 'Travel Guide',
       subtitle: 'Visas, Monsoons, Currency & Hotlines',
-      href: '#travel-guide',
+      path: '/guide',
       image: 'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&w=800&q=80'
     }
   ];
 
   if (!isOpen) return null;
+
+  const handleItemClick = (e: React.MouseEvent, path: string) => {
+    e.preventDefault();
+    onClose();
+    navigateToSection(path);
+  };
 
   return (
     <div className="fixed inset-0 z-50 bg-[#0C0D0E] flex flex-col justify-between overflow-hidden animate-in fade-in duration-300">
@@ -95,7 +102,10 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, onOpenP
 
       {/* Top Bar */}
       <div className="relative z-10 px-6 py-6 flex items-center justify-between border-b border-white/10">
-        <div className="flex items-center gap-2">
+        <div
+          onClick={(e) => handleItemClick(e, '/')}
+          className="flex items-center gap-2 cursor-pointer"
+        >
           <span className="font-display tracking-[0.25em] text-xl font-bold text-[#F3EFE6]">
             SERENDIB
           </span>
@@ -104,7 +114,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, onOpenP
         <button
           onClick={onClose}
           aria-label="Close menu"
-          className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+          className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
         >
           <X className="w-6 h-6" />
         </button>
@@ -116,10 +126,10 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, onOpenP
           {menuItems.map((item, idx) => (
             <a
               key={item.num}
-              href={item.href}
-              onClick={onClose}
+              href={item.path}
+              onClick={(e) => handleItemClick(e, item.path)}
               onMouseEnter={() => setHoveredIdx(idx)}
-              className="group flex items-baseline justify-between border-b border-white/5 pb-3 transition-all duration-300 hover:border-[#C5A059]/40"
+              className="group flex items-baseline justify-between border-b border-white/5 pb-3 transition-all duration-300 hover:border-[#C5A059]/40 cursor-pointer"
             >
               <div className="flex items-baseline gap-4">
                 <span className="font-mono text-xs text-[#C5A059]/60 group-hover:text-[#C5A059]">
@@ -148,7 +158,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, onOpenP
               onClose();
               onOpenPlanner();
             }}
-            className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#C5A059] text-[#0C0D0E] font-sans font-semibold text-xs tracking-[0.2em] uppercase px-8 py-3.5 rounded-full hover:bg-[#b08b43] transition-all shadow-lg"
+            className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#C5A059] text-[#0C0D0E] font-sans font-semibold text-xs tracking-[0.2em] uppercase px-8 py-3.5 rounded-full hover:bg-[#b08b43] transition-all shadow-lg cursor-pointer"
           >
             <Sparkles className="w-4 h-4" />
             <span>Plan Your Journey</span>

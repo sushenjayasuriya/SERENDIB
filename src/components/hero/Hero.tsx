@@ -3,6 +3,7 @@ import { useMedia } from '../../context/MediaContext';
 import { Compass, ArrowDown, Sparkles, ChevronRight } from 'lucide-react';
 import { InteractiveParticles } from '../ui/InteractiveParticles';
 import { LiveIslandClock } from '../ui/LiveIslandClock';
+import { navigateToSection } from '../../utils/navigation';
 
 interface HeroProps {
   onExplore: () => void;
@@ -148,9 +149,13 @@ export const Hero: React.FC<HeroProps> = ({ onExplore, onPlan }) => {
 
         {/* Scroll Down Cue */}
         <a
-          href="#introduction"
+          href="/about"
+          onClick={(e) => {
+            e.preventDefault();
+            navigateToSection('/about');
+          }}
           aria-label="Scroll to introduction"
-          className="group flex items-center gap-2 text-[10px] sm:text-[11px] font-mono tracking-[0.2em] uppercase text-[#D8CBB5]/70 hover:text-[#C5A059] transition-colors"
+          className="group flex items-center gap-2 text-[10px] sm:text-[11px] font-mono tracking-[0.2em] uppercase text-[#D8CBB5]/70 hover:text-[#C5A059] transition-colors cursor-pointer"
         >
           <span className="hidden md:inline">DISCOVER THE ISLAND</span>
           <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/50 backdrop-blur-md border border-white/20 flex items-center justify-center group-hover:border-[#C5A059] group-hover:scale-110 transition-all duration-300">

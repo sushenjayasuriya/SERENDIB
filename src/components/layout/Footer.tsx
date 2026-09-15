@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { ArrowUp, Mail, CheckCircle2, Lock, Sparkles, Compass } from 'lucide-react';
 import { useMedia } from '../../context/MediaContext';
+import { navigateToSection } from '../../utils/navigation';
 
 export const Footer: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -32,8 +33,14 @@ export const Footer: React.FC = () => {
     }
   };
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+    e.preventDefault();
+    navigateToSection(path);
+  };
+
+  const scrollToTop = (e?: React.MouseEvent) => {
+    if (e) e.preventDefault();
+    navigateToSection('/');
   };
 
   return (
@@ -58,61 +65,47 @@ export const Footer: React.FC = () => {
               className="inline-flex items-center gap-3 cursor-pointer select-none group"
               title="SERENDIB — Sri Lanka"
             >
-              <span className="font-serif tracking-[0.25em] text-3xl sm:text-4xl font-light text-[#F3EFE6] group-hover:text-gold-gradient transition-colors">
+              <span className="font-serif tracking-[0.25em] text-3xl font-black text-[#F3EFE6] group-hover:text-gold-gradient transition-colors">
                 SERENDIB
               </span>
-              <span className="w-2 h-2 rounded-full bg-[#E6CA85] animate-pulse" />
+              <span className="w-2.5 h-2.5 rounded-full bg-[#E6CA85] animate-pulse shadow-[0_0_12px_#C5A059]" />
             </div>
-            <p className="font-serif italic text-lg text-gold-gradient font-light">
-              Sri Lanka · The Island Beyond
-            </p>
-            <p className="font-sans text-xs sm:text-sm text-[#D8CBB5]/75 max-w-md leading-relaxed font-light">
-              "One island. A thousand journeys." From misty emerald tea highlands and wild leopard sanctuaries to ancient 2,500-year-old rock palaces and warm Indian Ocean surf.
+            
+            <p className="font-serif italic text-lg text-[#D8CBB5]/90 max-w-md">
+              "One island. A thousand journeys."
             </p>
             
-            <div className="pt-2 flex flex-wrap items-center gap-3 text-xs font-mono text-[#E6CA85]/80">
-              <span className="bg-white/5 px-2.5 py-1 rounded-md border border-white/10">7° 52′ 23″ N</span>
-              <span>•</span>
-              <span className="bg-white/5 px-2.5 py-1 rounded-md border border-white/10">80° 46′ 19″ E</span>
-              <span>•</span>
-              <span className="text-[#C5A059] font-bold">INDIAN OCEAN</span>
-            </div>
+            <p className="font-sans text-xs text-[#D8CBB5]/65 leading-relaxed max-w-md font-light">
+              Where 2,500 years of ancient royal citadels, mist-covered Ceylon tea mountains, wild leopard sanctuaries, and turquoise surf bays converge in perpetual harmony.
+            </p>
           </div>
 
-          {/* Newsletter / Lookbook */}
-          <div className="lg:col-span-7 bg-gradient-to-b from-[#12151D]/90 to-[#0A0C10]/95 border border-[#C5A059]/25 p-8 sm:p-10 rounded-3xl relative overflow-hidden backdrop-blur-xl shadow-2xl">
-            <div className="absolute -right-12 -top-12 w-48 h-48 bg-[#C5A059]/15 rounded-full blur-3xl" />
-            
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C5A059]/10 text-[#E6CA85] text-[10px] font-mono tracking-widest uppercase mb-3 border border-[#C5A059]/30">
-              <Sparkles className="w-3 h-3 text-[#C5A059]" />
-              <span>Exclusive Island Dispatch</span>
+          <div className="lg:col-span-7 flex flex-col justify-center">
+            <div className="mb-4">
+              <span className="font-mono text-xs tracking-[0.2em] uppercase text-[#E6CA85] flex items-center gap-2">
+                <Sparkles className="w-3.5 h-3.5" /> Curated Island Gazette
+              </span>
+              <h4 className="font-serif text-2xl sm:text-3xl text-white mt-1">
+                Receive Private Expeditions & Seasonal Dispatches
+              </h4>
             </div>
 
-            <h4 className="font-serif text-2xl sm:text-3xl text-white font-light mb-2">
-              Receive the Curated Ceylon Lookbook
-            </h4>
-            <p className="font-sans text-xs text-[#D8CBB5]/70 mb-6 max-w-lg font-light leading-relaxed">
-              Seasonal travel intelligence, secret train routes, heritage culinary secrets, and high-resolution photography delivered to your inbox.
-            </p>
-
             {subscribed ? (
-              <div className="flex items-center gap-3 bg-[#1B382B]/80 border border-[#78C28A]/40 text-[#78C28A] px-5 py-4 rounded-2xl">
-                <CheckCircle2 className="w-5 h-5 flex-shrink-0" />
-                <p className="font-sans text-xs">
-                  Thank you! The curated Sri Lanka Collector's Lookbook has been dispatched to your email.
-                </p>
+              <div className="p-4 rounded-2xl bg-[#C5A059]/15 border border-[#C5A059]/40 flex items-center gap-3 text-sm text-[#E6CA85]">
+                <CheckCircle2 className="w-5 h-5 text-[#C5A059] shrink-0" />
+                <span>Thank you. You have been added to the private Serendib Lookbook registry.</span>
               </div>
             ) : (
               <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3">
                 <div className="relative flex-1">
-                  <Mail className="w-4 h-4 text-stone-400 absolute left-4 top-1/2 -translate-y-1/2" />
+                  <Mail className="w-4 h-4 text-white/40 absolute left-4 top-1/2 -translate-y-1/2" />
                   <input
                     type="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your email for the Lookbook"
-                    className="w-full bg-white/[0.04] border border-white/15 focus:border-[#C5A059] text-white text-xs pl-11 pr-4 py-4 rounded-2xl outline-none transition-all font-sans placeholder:text-stone-500 shadow-inner"
+                    placeholder="Enter your private email address..."
+                    className="w-full pl-11 pr-4 py-4 rounded-2xl bg-white/5 border border-white/15 focus:border-[#C5A059] focus:outline-none text-sm text-white placeholder:text-white/30 transition-all font-sans"
                   />
                 </div>
                 <button
@@ -134,11 +127,11 @@ export const Footer: React.FC = () => {
               <Compass className="w-3.5 h-3.5 text-[#C5A059]" /> Explore
             </h5>
             <ul className="space-y-3 font-sans text-xs text-[#D8CBB5]/80 font-light">
-              <li><a href="#destinations" className="hover:text-gold-gradient transition-colors">Destinations</a></li>
-              <li><a href="#map" className="hover:text-gold-gradient transition-colors">Interactive Map</a></li>
-              <li><a href="#beaches" className="hover:text-gold-gradient transition-colors">Ocean Beaches & Surf</a></li>
-              <li><a href="#highlands" className="hover:text-gold-gradient transition-colors">Highlands & Tea</a></li>
-              <li><a href="#wildlife" className="hover:text-gold-gradient transition-colors">Big 5 Wildlife Sanctuaries</a></li>
+              <li><a href="/destinations" onClick={(e) => handleLinkClick(e, '/destinations')} className="hover:text-gold-gradient transition-colors cursor-pointer">Destinations</a></li>
+              <li><a href="/map" onClick={(e) => handleLinkClick(e, '/map')} className="hover:text-gold-gradient transition-colors cursor-pointer">Interactive Map</a></li>
+              <li><a href="/beaches" onClick={(e) => handleLinkClick(e, '/beaches')} className="hover:text-gold-gradient transition-colors cursor-pointer">Ocean Beaches & Surf</a></li>
+              <li><a href="/highlands" onClick={(e) => handleLinkClick(e, '/highlands')} className="hover:text-gold-gradient transition-colors cursor-pointer">Highlands & Tea</a></li>
+              <li><a href="/wildlife" onClick={(e) => handleLinkClick(e, '/wildlife')} className="hover:text-gold-gradient transition-colors cursor-pointer">Big 5 Wildlife Sanctuaries</a></li>
             </ul>
           </div>
 
@@ -147,11 +140,11 @@ export const Footer: React.FC = () => {
               Culture & Soul
             </h5>
             <ul className="space-y-3 font-sans text-xs text-[#D8CBB5]/80 font-light">
-              <li><a href="#heritage" className="hover:text-gold-gradient transition-colors">2,500 Years Heritage</a></li>
-              <li><a href="#food" className="hover:text-gold-gradient transition-colors">Ceylon Culinary & Spices</a></li>
-              <li><a href="#experiences" className="hover:text-gold-gradient transition-colors">10 Bucket-List Moments</a></li>
-              <li><a href="#regions" className="hover:text-gold-gradient transition-colors">The 6 Island Realms</a></li>
-              <li><a href="#planner" className="hover:text-gold-gradient transition-colors">Journey Architect</a></li>
+              <li><a href="/heritage" onClick={(e) => handleLinkClick(e, '/heritage')} className="hover:text-gold-gradient transition-colors cursor-pointer">2,500 Years Heritage</a></li>
+              <li><a href="/cuisine" onClick={(e) => handleLinkClick(e, '/cuisine')} className="hover:text-gold-gradient transition-colors cursor-pointer">Ceylon Culinary & Spices</a></li>
+              <li><a href="/experiences" onClick={(e) => handleLinkClick(e, '/experiences')} className="hover:text-gold-gradient transition-colors cursor-pointer">10 Bucket-List Moments</a></li>
+              <li><a href="/regions" onClick={(e) => handleLinkClick(e, '/regions')} className="hover:text-gold-gradient transition-colors cursor-pointer">The 6 Island Realms</a></li>
+              <li><a href="/planner" onClick={(e) => handleLinkClick(e, '/planner')} className="hover:text-gold-gradient transition-colors cursor-pointer">Journey Architect</a></li>
             </ul>
           </div>
 
@@ -160,11 +153,11 @@ export const Footer: React.FC = () => {
               Key Wonders
             </h5>
             <ul className="space-y-3 font-sans text-xs text-[#D8CBB5]/80 font-light">
-              <li><a href="#destinations" className="hover:text-gold-gradient transition-colors">Sigiriya Citadel</a></li>
-              <li><a href="#destinations" className="hover:text-gold-gradient transition-colors">Nine Arch Bridge</a></li>
-              <li><a href="#destinations" className="hover:text-gold-gradient transition-colors">UNESCO Galle Fort</a></li>
-              <li><a href="#destinations" className="hover:text-gold-gradient transition-colors">Kandy Sacred Temple</a></li>
-              <li><a href="#destinations" className="hover:text-gold-gradient transition-colors">Yala Leopard Range</a></li>
+              <li><a href="/destinations" onClick={(e) => handleLinkClick(e, '/destinations')} className="hover:text-gold-gradient transition-colors cursor-pointer">Sigiriya Citadel</a></li>
+              <li><a href="/destinations" onClick={(e) => handleLinkClick(e, '/destinations')} className="hover:text-gold-gradient transition-colors cursor-pointer">Nine Arch Bridge</a></li>
+              <li><a href="/destinations" onClick={(e) => handleLinkClick(e, '/destinations')} className="hover:text-gold-gradient transition-colors cursor-pointer">UNESCO Galle Fort</a></li>
+              <li><a href="/destinations" onClick={(e) => handleLinkClick(e, '/destinations')} className="hover:text-gold-gradient transition-colors cursor-pointer">Kandy Sacred Temple</a></li>
+              <li><a href="/destinations" onClick={(e) => handleLinkClick(e, '/destinations')} className="hover:text-gold-gradient transition-colors cursor-pointer">Yala Leopard Range</a></li>
             </ul>
           </div>
 
@@ -173,11 +166,11 @@ export const Footer: React.FC = () => {
               Information
             </h5>
             <ul className="space-y-3 font-sans text-xs text-[#D8CBB5]/80 font-light">
-              <li><a href="#travel-guide" className="hover:text-gold-gradient transition-colors">ETA & Visa Process</a></li>
-              <li><a href="#travel-guide" className="hover:text-gold-gradient transition-colors">Monsoon Best Seasons</a></li>
-              <li><a href="#travel-guide" className="hover:text-gold-gradient transition-colors">Currency & LKR Guide</a></li>
-              <li><a href="#travel-guide" className="hover:text-gold-gradient transition-colors">Scenic Train Booking</a></li>
-              <li><a href="#travel-guide" className="hover:text-gold-gradient transition-colors">Emergency Hotlines</a></li>
+              <li><a href="/guide" onClick={(e) => handleLinkClick(e, '/guide')} className="hover:text-gold-gradient transition-colors cursor-pointer">ETA & Visa Process</a></li>
+              <li><a href="/guide" onClick={(e) => handleLinkClick(e, '/guide')} className="hover:text-gold-gradient transition-colors cursor-pointer">Monsoon Best Seasons</a></li>
+              <li><a href="/guide" onClick={(e) => handleLinkClick(e, '/guide')} className="hover:text-gold-gradient transition-colors cursor-pointer">Currency & LKR Guide</a></li>
+              <li><a href="/guide" onClick={(e) => handleLinkClick(e, '/guide')} className="hover:text-gold-gradient transition-colors cursor-pointer">Scenic Train Booking</a></li>
+              <li><a href="/guide" onClick={(e) => handleLinkClick(e, '/guide')} className="hover:text-gold-gradient transition-colors cursor-pointer">Emergency Hotlines</a></li>
             </ul>
           </div>
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { MediaProvider, useMedia } from './context/MediaContext';
 import { MediaAdminModal } from './components/admin/MediaAdminModal';
 import { AdminLiveBar } from './components/admin/AdminLiveBar';
@@ -26,13 +26,22 @@ import { FloatingQuickNav } from './components/ui/FloatingQuickNav';
 import { CursorGlow } from './components/ui/CursorGlow';
 import { ConciergeModal } from './components/concierge/ConciergeModal';
 import { WhatsAppConcierge } from './components/commercial/WhatsAppConcierge';
+import { useScrollSpy } from './hooks/useScrollSpy';
+import { navigateToSection } from './utils/navigation';
 
 function MainSiteContent() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isConciergeOpen, setIsConciergeOpen] = useState(false);
   const { setIsAdminOpen } = useMedia();
 
-  // Admin shortcut: Ctrl + Shift + A (or Cmd + Shift + A) or URL hash #admin or query ?admin=true
+  const handleAdminTrigger = useCallback(() => {
+    setIsAdminOpen(true);
+  }, [setIsAdminOpen]);
+
+  // Clean Semantic ScrollSpy and Deep Linking Hook
+  useScrollSpy(handleAdminTrigger);
+
+  // Admin shortcut: Ctrl + Shift + A (or Cmd + Shift + A) or URL query ?admin=true
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
@@ -43,7 +52,12 @@ function MainSiteContent() {
 
     const handleUrlCheck = () => {
       const urlParams = new URLSearchParams(window.location.search);
-      if (window.location.hash === '#admin' || urlParams.get('admin') === 'true' || urlParams.get('admin') === 'studio') {
+      if (
+        window.location.pathname === '/admin' ||
+        window.location.hash === '#admin' ||
+        urlParams.get('admin') === 'true' ||
+        urlParams.get('admin') === 'studio'
+      ) {
         setIsAdminOpen(true);
       }
     };
@@ -58,19 +72,12 @@ function MainSiteContent() {
     };
   }, [setIsAdminOpen]);
 
-  const scrollToSection = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   const handleOpenPlanner = () => {
-    scrollToSection('planner');
+    navigateToSection('/planner');
   };
 
   const handleExplore = () => {
-    scrollToSection('destinations');
+    navigateToSection('/destinations');
   };
 
   const handleOpenConcierge = () => {
@@ -126,7 +133,7 @@ function MainSiteContent() {
 
         {/* 4. Interactive Geographically Accurate Stylized Vector SVG Map */}
         <SriLankaMap
-          onSelectDestination={() => scrollToSection('destinations')}
+          onSelectDestination={handleExplore}
           onOpenPlanner={handleOpenPlanner}
         />
 
