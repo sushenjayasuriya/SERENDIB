@@ -57,6 +57,19 @@ export const SerendibAIChatbot: React.FC<SerendibAIChatbotProps> = ({ onOpenBook
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  // Auto-open after a thoughtful 6.5s delay on initial arrival
+  useEffect(() => {
+    const hasAlreadyAutoOpened = sessionStorage.getItem('serendib_ai_auto_opened');
+    if (!hasAlreadyAutoOpened) {
+      const timer = window.setTimeout(() => {
+        setIsOpen(true);
+        sessionStorage.setItem('serendib_ai_auto_opened', 'true');
+      }, 6500);
+
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
   useEffect(() => {
     if (isOpen) {
       scrollToBottom();
