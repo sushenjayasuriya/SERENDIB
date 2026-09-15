@@ -26,6 +26,7 @@ import { FloatingQuickNav } from './components/ui/FloatingQuickNav';
 import { CursorGlow } from './components/ui/CursorGlow';
 import { ConciergeModal } from './components/concierge/ConciergeModal';
 import { WhatsAppConcierge } from './components/commercial/WhatsAppConcierge';
+import { SerendibAIChatbot } from './components/concierge/SerendibAIChatbot';
 import { useScrollSpy } from './hooks/useScrollSpy';
 import { navigateToSection } from './utils/navigation';
 
@@ -170,6 +171,9 @@ function MainSiteContent() {
         {/* 15. About & Editorial Credibility */}
         <AboutSerendib />
       </main>
+
+      {/* Serendib AI Island Expedition Concierge */}
+      <SerendibAIChatbot onOpenBookingModal={handleOpenConcierge} />
 
       {/* Commercial Floating WhatsApp Concierge Button */}
       <WhatsAppConcierge onOpenConcierge={handleOpenConcierge} />

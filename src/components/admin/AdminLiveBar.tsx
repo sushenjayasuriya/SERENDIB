@@ -32,7 +32,7 @@ export const AdminLiveBar: React.FC = () => {
   return (
     <aside
       aria-label="Admin Studio Live Bar"
-      className="fixed bottom-6 left-6 z-[9998] animate-in slide-in-from-bottom-4 duration-500 font-sans select-none"
+      className="fixed bottom-24 left-6 z-[9998] animate-in slide-in-from-bottom-4 duration-500 font-sans select-none"
     >
       {isMinimized ? (
         /* Minimized golden badge */
