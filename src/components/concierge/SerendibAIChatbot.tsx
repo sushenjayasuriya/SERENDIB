@@ -6,13 +6,17 @@ import {
   Sparkles, 
   RotateCcw, 
   ArrowUpRight,
-  ShieldCheck
+  ShieldCheck,
+  Compass
 } from 'lucide-react';
 import { 
   QUICK_PROMPTS, 
   INITIAL_GREETING, 
   findChatbotResponse, 
-  type ChatAction 
+  handleQuizTransition,
+  type ChatAction,
+  type ChatDestinationCard,
+  type QuizState
 } from '../../data/chatbotKnowledge';
 import { navigateToSection } from '../../utils/navigation';
 
@@ -20,6 +24,7 @@ interface Message {
   id: string;
   sender: 'bot' | 'user';
   text: string;
+  cards?: ChatDestinationCard[];
   actions?: ChatAction[];
   timestamp: string;
 }
@@ -31,6 +36,7 @@ interface SerendibAIChatbotProps {
 export const SerendibAIChatbot: React.FC<SerendibAIChatbotProps> = ({ onOpenBookingModal }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [hasOpenedOnce, setHasOpenedOnce] = useState(false);
+  const [quizState, setQuizState] = useState<QuizState>({});
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 'init-1',
@@ -90,6 +96,7 @@ export const SerendibAIChatbot: React.FC<SerendibAIChatbotProps> = ({ onOpenBook
           id: `bot-${Date.now()}`,
           sender: 'bot',
           text: responseData.reply,
+          cards: responseData.cards,
           actions: responseData.actions,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         }
@@ -99,16 +106,52 @@ export const SerendibAIChatbot: React.FC<SerendibAIChatbotProps> = ({ onOpenBook
   };
 
   const handleActionClick = (action: ChatAction) => {
-    if (action.type === 'navigate' && action.payload) {
+    if (action.type === 'quiz_step' && action.payload) {
+      // User tapped a quiz step
+      const choiceLabel = action.label;
+      const userMsgId = `user-${Date.now()}`;
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: userMsgId,
+          sender: 'user',
+          text: choiceLabel,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        }
+      ]);
+
+      setIsTyping(true);
+      const thinkingDelay = Math.floor(Math.random() * 400) + 1800;
+
+      setTimeout(() => {
+        const result = handleQuizTransition(action.payload!, quizState);
+        setQuizState(result.nextState);
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: `bot-${Date.now()}`,
+            sender: 'bot',
+            text: result.reply,
+            cards: result.cards,
+            actions: result.actions,
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          }
+        ]);
+        setIsTyping(false);
+      }, thinkingDelay);
+    } else if (action.type === 'navigate' && action.payload) {
       navigateToSection(action.payload);
-      // On mobile close chat to let user see section
       if (window.innerWidth < 768) {
         setIsOpen(false);
       }
     } else if (action.type === 'whatsapp') {
-      const phone = action.payload || '94713912972';
-      const text = encodeURIComponent("Hello SERENDIB Expeditions, I am inquiring about a luxury journey to Sri Lanka.");
-      window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
+      const payload = action.payload || '94713912972';
+      if (payload.includes('&text=')) {
+        window.open(`https://wa.me/${payload}`, '_blank');
+      } else {
+        const text = encodeURIComponent("Hello SERENDIB Expeditions, I would like to inquire about a luxury journey to Sri Lanka.");
+        window.open(`https://wa.me/${payload}?text=${text}`, '_blank');
+      }
     } else if (action.type === 'modal') {
       onOpenBookingModal();
       setIsOpen(false);
@@ -116,6 +159,7 @@ export const SerendibAIChatbot: React.FC<SerendibAIChatbotProps> = ({ onOpenBook
   };
 
   const handleResetChat = () => {
+    setQuizState({});
     setMessages([
       {
         id: `init-${Date.now()}`,
@@ -214,7 +258,7 @@ export const SerendibAIChatbot: React.FC<SerendibAIChatbotProps> = ({ onOpenBook
 
       {/* Floating Chat Drawer Window */}
       {isOpen && (
-        <div className="fixed bottom-4 left-4 right-4 sm:right-auto sm:left-6 sm:bottom-6 z-[9999] w-auto sm:w-[420px] max-w-[95vw] h-[580px] max-h-[88vh] bg-[#0A0C11]/98 border border-[#C5A059]/60 rounded-3xl shadow-[0_25px_70px_rgba(0,0,0,0.95),0_0_30px_rgba(197,160,89,0.25)] backdrop-blur-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in-95 slide-in-from-bottom-6 duration-300 font-sans">
+        <div className="fixed bottom-4 left-4 right-4 sm:right-auto sm:left-6 sm:bottom-6 z-[9999] w-auto sm:w-[450px] max-w-[95vw] h-[600px] max-h-[88vh] bg-[#0A0C11]/98 border border-[#C5A059]/60 rounded-3xl shadow-[0_25px_70px_rgba(0,0,0,0.95),0_0_30px_rgba(197,160,89,0.25)] backdrop-blur-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in-95 slide-in-from-bottom-6 duration-300 font-sans">
           
           {/* Header */}
           <div className="px-5 py-4 bg-gradient-to-r from-[#121622] via-[#0E111A] to-[#121622] border-b border-white/10 flex items-center justify-between">
@@ -265,7 +309,7 @@ export const SerendibAIChatbot: React.FC<SerendibAIChatbotProps> = ({ onOpenBook
                 className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}
               >
                 <div
-                  className={`max-w-[88%] rounded-2xl px-4 py-3 text-xs leading-relaxed transition-all shadow-md ${
+                  className={`max-w-[92%] rounded-2xl px-4 py-3 text-xs leading-relaxed transition-all shadow-md ${
                     msg.sender === 'user'
                       ? 'bg-gradient-to-r from-[#C5A059] to-[#b08b43] text-[#0C0D0E] font-medium rounded-br-none'
                       : 'bg-white/5 border border-white/10 text-[#F3EFE6]/90 rounded-bl-none'
@@ -274,9 +318,53 @@ export const SerendibAIChatbot: React.FC<SerendibAIChatbotProps> = ({ onOpenBook
                   {renderFormattedMessage(msg.text, msg.sender === 'user')}
                 </div>
 
+                {/* Rich Visual Destination Cards (Horizontal Carousel) */}
+                {msg.cards && msg.cards.length > 0 && (
+                  <div className="flex gap-2.5 overflow-x-auto py-2 max-w-full scrollbar-thin scrollbar-thumb-white/10 mt-1">
+                    {msg.cards.map((card) => (
+                      <div
+                        key={card.id}
+                        className="w-[200px] shrink-0 rounded-2xl bg-[#111520] border border-[#C5A059]/40 overflow-hidden shadow-lg group hover:border-[#C5A059] transition-all flex flex-col justify-between"
+                      >
+                        <div className="relative h-24 w-full overflow-hidden">
+                          <img
+                            src={card.image}
+                            alt={card.name}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-[#111520] via-transparent to-black/40" />
+                          <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-black/70 backdrop-blur-md border border-white/20 font-mono text-[7.5px] text-[#E6CA85] uppercase tracking-wider">
+                            {card.badge}
+                          </span>
+                        </div>
+                        <div className="p-2.5 flex-1 flex flex-col justify-between">
+                          <div>
+                            <h4 className="font-serif text-xs font-bold text-white group-hover:text-[#E6CA85] transition-colors leading-tight line-clamp-1">
+                              {card.name}
+                            </h4>
+                            <p className="font-sans text-[9px] text-[#D8CBB5]/70 line-clamp-2 mt-1 font-light">
+                              {card.tagline}
+                            </p>
+                          </div>
+                          <button
+                            onClick={() => {
+                              navigateToSection(card.path);
+                              if (window.innerWidth < 768) setIsOpen(false);
+                            }}
+                            className="mt-2 w-full py-1 rounded-xl bg-white/5 hover:bg-[#C5A059]/20 border border-white/10 hover:border-[#C5A059]/50 text-[9px] font-mono text-[#E6CA85] flex items-center justify-center gap-1 transition-all cursor-pointer"
+                          >
+                            <Compass className="w-3 h-3 text-[#C5A059]" />
+                            <span>Explore Details</span>
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
                 {/* Message Interactive Action Cards */}
                 {msg.actions && msg.actions.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mt-2 max-w-[90%]">
+                  <div className="flex flex-wrap gap-2 mt-2 max-w-[95%]">
                     {msg.actions.map((act, i) => (
                       <button
                         key={i}

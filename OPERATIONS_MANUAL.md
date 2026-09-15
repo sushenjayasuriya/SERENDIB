@@ -44,7 +44,7 @@ SERENDIB is a high-performance, responsive, luxury travel platform designed with
 | **14** | **About & Credibility Section** | Transparency statement on authorship, editorial independence, and research methodology. |
 
 ### 🛎️ Commercial Booking & Concierge Actions
-- **🤖 Serendib Island AI Concierge**: Built-in intelligent assistant with simulated 2–3s thinking delay, rich Sri Lankan expedition knowledge base, quick prompt chips, and 1-click interactive action buttons.
+- **🤖 Serendib Island AI Concierge**: Built-in intelligent assistant with simulated 2–3s thinking delay, rich Sri Lankan expedition knowledge base, quick prompt chips, **Multi-Turn "Bespoke Expedition Quiz" Mode**, **Rich Visual Destination Cards Carousel**, and pre-filled WhatsApp hand-off buttons.
 - **Bespoke Concierge Booking Modal**: Accessible across the site, enabling visitors to configure private chauffeur-guides, luxury vehicle preferences, and custom travel parameters with an instant reservation reference (`SRN-2026-XXXX`).
 - **Direct WhatsApp Specialist**: Floating button at the bottom-right linking directly to **`+94 71 391 2972`** (`https://wa.me/94713912972`).
 - **Floating Waypoints Dock**: Bottom-right floating dock with an animated circular scroll progress indicator for jumping between sections.
